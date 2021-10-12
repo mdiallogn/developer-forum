@@ -1,0 +1,27 @@
+[plantuml, diagram-class, png]
+....
+class User {
+    - id: Integer
+    - firstName: String
+    - lastName: String
+    - username: String
+    - password: String
+    - createdAt: Datetime
+    - updatedAt: Datetime
+}
+
+class Post {
+    - id: Integer
+    - content: String
+    - createdAt: Datime
+    - updatedAt: Datetime
+}
+
+class Comment {}
+
+User <-- "author" Post
+User <-- "author" Comment
+Comment ----"1..*" Post
+Comment -- "[0..*]reply" Comment
+
+....
