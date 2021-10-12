@@ -10,24 +10,23 @@ import java.util.UUID;
 
 @Data
 @Document(collection = "user")
-public abstract class User implements IUser {
+public class User implements IUser {
 
     private UUID id;
     private String firstName;
     private String lastName;
     private String userName;
     private String password;
-    private Set<Role> roles;
+    private String role;
 
 
-    public User(String firstName, String lastName, String userName, String password) {
+    public User(String firstName, String lastName, String userName, String password, String role) {
         this.id = UUID.randomUUID();
         this.firstName = firstName;
         this.lastName = lastName;
         this.userName = userName;
         this.password = password;
-        this.roles = new HashSet<>();
-        this.roles.add(Role.USER);
+        this.role = role;
     }
 
     @Override
@@ -56,8 +55,8 @@ public abstract class User implements IUser {
     }
 
     @Override
-    public Set<Role> getRoles() {
-        return roles;
+    public String getRoles() {
+        return role;
     }
 
     @Override
@@ -81,9 +80,10 @@ public abstract class User implements IUser {
     }
 
     @Override
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
+    public void setRoles(String role) {
+        this.role = role;
     }
+
 
     @Override
     public String toString() {
@@ -93,7 +93,7 @@ public abstract class User implements IUser {
                 ", lastName='" + lastName + '\'' +
                 ", userName='" + userName + '\'' +
                 ", password='" + password + '\'' +
-                ", roles=" + roles +
+                ", role=" + role +
                 '}';
     }
 
