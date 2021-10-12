@@ -102,21 +102,16 @@ public abstract class User implements IUser {
         if (this == o) return true;
         if (!(o instanceof User)) return false;
         User user = (User) o;
-        return  Objects.equals(getId(), user.getId()) &&
-                Objects.equals(getFirstName(), user.getFirstName()) &&
-                Objects.equals(getLastName(), user.getLastName()) &&
-                Objects.equals(getUserName(), user.getUserName()) &&
-                Objects.equals(getPassword(), user.getPassword()) &&
-                Objects.equals(getRoles(), user.getRoles());
+        return  getId().equals(user.getId()) &&
+                getFirstName().equals(user.getFirstName()) &&
+                getLastName().equals(user.getLastName()) &&
+                getUserName().equals(user.getUserName()) &&
+                getPassword().equals(user.getPassword()) &&
+                getRoles().equals(user.getRoles());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(),
-                            getFirstName(),
-                            getLastName(),
-                            getUserName(),
-                            getPassword(),
-                            getRoles());
+        return Objects.hash(getId(), getFirstName(), getLastName(), getUserName(), getRoles());
     }
 }
