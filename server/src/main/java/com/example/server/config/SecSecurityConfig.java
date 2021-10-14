@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static com.example.server.utils.Const.HOME;
+
 public class SecSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final List<IUser> users = Stream.of(
@@ -40,7 +42,7 @@ public class SecSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/api/admin/**").hasRole(Const.ADMIN)
-                .antMatchers("/api/home/").hasAnyRole(Const.USER, Const.ADMIN)
+                .antMatchers(HOME).hasAnyRole(Const.USER, Const.ADMIN)
                 .antMatchers("/api/login*").permitAll()
                 .anyRequest().authenticated();
     }
