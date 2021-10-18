@@ -1,6 +1,6 @@
 package com.example.server.model;
 
-import lombok.Data;
+import lombok.*;
 import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -9,6 +9,10 @@ import java.util.List;
 import java.util.Objects;
 
 @Data
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 @Document(collection = "post")
 public class Post extends Common{
 

@@ -4,16 +4,18 @@ import com.example.server.model.IUser;
 import com.example.server.model.User;
 import com.example.server.utils.Const;
 import com.example.server.utils.PasswordEncoderHelper;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.example.server.utils.Const.HOME;
-
+@Configuration
+@EnableWebSecurity
 public class SecSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final List<IUser> users = Stream.of(
@@ -24,18 +26,10 @@ public class SecSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        /*
-        users.stream().map(user -> {
-            try {
-                auth.inMemoryAuthentication().withUser(user.getUserName())
-                                             .password(PasswordEncoderHelper.passwordEncoder().encode(user.getPassword()))
-                                             .roles(user.getRoles());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return null;
-        });
-         */
+        User user =  new User("Diallo", "Mamadou", "greer", "Greer", Const.ADMIN);
+        auth.inMemoryAuthentication().withUser(user.getUserName())
+                .password(PasswordEncoderHelper.passwordEncoder().encode(user.getPassword()))
+                .roles(user.getRoles());
     }
 
     @Override
@@ -43,9 +37,13 @@ public class SecSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                //.antMatchers("/api/admin/**").hasRole(Const.ADMIN)
-                //.antMatchers("/api/home").permitAll()
+                .antMatchers("/api/admin/**").hasRole(Const.ADMIN)
+                .antMatchers("/api/home").permitAll()
+                .antMatchers("/api/user/add").permitAll()
+                .antMatchers("/api/user/**").permitAll()
                 //.antMatchers("/api/login*").permitAll()
                 .anyRequest().authenticated();
+
     }
+
 }

@@ -3,7 +3,9 @@ package com.example.server.controller;
 import com.example.server.exceptions.CommentNotFoundException;
 import com.example.server.model.Comment;
 import com.example.server.repository.CommentRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,10 +18,13 @@ import java.util.Optional;
 public class CommentController {
 
     private final CommentRepository repository;
+    private final ObjectMapper mapper = new ObjectMapper();
 
     @PostMapping("/add")
-    public Comment add(@RequestBody JsonNode jsonNode) {
-        return null;
+    public Comment add(@RequestBody JsonNode jsonNode) throws JsonProcessingException {
+        Comment comment = mapper.treeToValue(jsonNode, Comment.class);
+        //System.out.println("comment: "+comment.toString());
+        return comment;
     }
 
     @PutMapping("/{id}")
@@ -34,6 +39,7 @@ public class CommentController {
 
     @GetMapping("/{id}")
     public Optional<Comment> getById(@PathVariable String id) {
+
         return repository.findById(id);
     }
 

@@ -10,6 +10,6 @@ public class UserNotFoundException extends RuntimeException{
     private static final long serialVersionUID = 1L;
 
     public UserNotFoundException(String idUser){
-        super(String.format("No user found with id %s ", idUser));
+        super(String.format("No user found for id %s ", idUser));
     }
 }

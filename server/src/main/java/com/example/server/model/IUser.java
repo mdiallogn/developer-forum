@@ -5,7 +5,7 @@ import java.util.UUID;
 
 public interface IUser {
 
-    UUID getId();
+    String getId();
     String getFirstName();
     String getLastName();
     String getUserName();

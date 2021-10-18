@@ -1,27 +1,37 @@
 package com.example.server.model;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
-import java.util.UUID;
 
 @Data
+@Setter
+@Getter
+@NoArgsConstructor
 @Document(collection = "user")
-public class User implements IUser {
+public class User implements IUser{
 
-    private UUID id;
+    @Id
+    private String id;
+    @Field("firstName")
     private String firstName;
+    @Field("lastName")
     private String lastName;
+    @Field("userName")
     private String userName;
+    @Field("password")
     private String password;
+    @Field("role")
     private String role;
 
 
     public User(String firstName, String lastName, String userName, String password, String role) {
-        this.id = UUID.randomUUID();
         this.firstName = firstName;
         this.lastName = lastName;
         this.userName = userName;
@@ -30,7 +40,7 @@ public class User implements IUser {
     }
 
     @Override
-    public UUID getId() {
+    public String getId() {
         return id;
     }
 
@@ -114,4 +124,5 @@ public class User implements IUser {
     public int hashCode() {
         return Objects.hash(getId(), getFirstName(), getLastName(), getUserName(), getRoles());
     }
+
 }
