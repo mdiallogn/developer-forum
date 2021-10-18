@@ -24,6 +24,7 @@ public class SecSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        /*
         users.stream().map(user -> {
             try {
                 auth.inMemoryAuthentication().withUser(user.getUserName())
@@ -34,6 +35,7 @@ public class SecSecurityConfig extends WebSecurityConfigurerAdapter {
             }
             return null;
         });
+         */
     }
 
     @Override
@@ -41,9 +43,9 @@ public class SecSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/api/admin/**").hasRole(Const.ADMIN)
-                .antMatchers(HOME).hasAnyRole(Const.USER, Const.ADMIN)
-                .antMatchers("/api/login*").permitAll()
+                //.antMatchers("/api/admin/**").hasRole(Const.ADMIN)
+                //.antMatchers("/api/home").permitAll()
+                //.antMatchers("/api/login*").permitAll()
                 .anyRequest().authenticated();
     }
 }

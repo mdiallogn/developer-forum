@@ -45,6 +45,7 @@ public class CommentController {
         repository.deleteById(id);
     }
 
+    @GetMapping("/all")
     public List<Comment> getAll() {
         return repository.findAll();
     }

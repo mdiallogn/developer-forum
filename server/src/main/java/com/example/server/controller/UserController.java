@@ -45,6 +45,7 @@ public class UserController {
         repository.deleteById(id);
     }
 
+    @GetMapping("/all")
     public List<User> getAll() {
         return repository.findAll();
     }

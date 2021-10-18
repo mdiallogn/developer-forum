@@ -45,6 +45,7 @@ public class PostController {
         repository.deleteById(id);
     }
 
+    @GetMapping("/all")
     public List<Post> getAll() {
         return repository.findAll();
     }
