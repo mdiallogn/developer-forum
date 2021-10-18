@@ -28,7 +28,6 @@ public class PostController {
             throw new PostNotFoundException(id);
         }
         repository.deleteById(id);
-        //return userRepository.save(newUser);
         return null;
     }
 
