@@ -2,13 +2,14 @@ package com.example.server.model;
 
 import lombok.*;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 @Data
 @Setter
@@ -20,17 +21,22 @@ public class Post{
 
     @Id
     private String id;
+    @Field("subject")
     private String subject;
+    @Field("content")
     private String content;
+    @Field("author")
     private User author;
-    private Date date;
+    @Field("date")
+    private String date;
+    @Field("comments")
     private List<Comment> comments;
 
-    public Post(String subject, String content, User author) {
+    public Post(String subject, String content) {
         this.subject = subject;
         this.content = content;
-        this.author = author;
-        this.date = new Date(System.currentTimeMillis());
+        this.author = null;
+        this.date = null;
         this.comments = new ArrayList<>();
     }
 
@@ -50,7 +56,7 @@ public class Post{
         return author;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 

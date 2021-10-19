@@ -41,7 +41,8 @@ public class SecSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/home").permitAll()
                 .antMatchers("/api/user/add").permitAll()
                 .antMatchers("/api/user/**").permitAll()
-                //.antMatchers("/api/login*").permitAll()
+                .antMatchers("/api/post/**").permitAll()
+                .antMatchers("/api/login*").permitAll()
                 .anyRequest().authenticated();
 
     }
