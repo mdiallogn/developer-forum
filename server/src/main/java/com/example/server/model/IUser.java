@@ -10,11 +10,11 @@ public interface IUser {
     String getLastName();
     String getUserName();
     String getPassword();
-    String getRoles();
+    String getRole();
 
     void setFirstName(String firstName);
     void setLastName(String lastName);
     void setUserName(String userName);
     void setPassword(String password);
-    void setRoles(String role);
+    void setRole(String role);
 }

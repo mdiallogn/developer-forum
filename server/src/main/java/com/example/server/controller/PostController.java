@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,7 +35,7 @@ public class PostController {
         Post post = mapper.convertValue(jsonNode, Post.class);
         post.setAuthor(author);
         post.setDate(DateGenerator.generateDate());
-
+        post.setComments(new ArrayList<>());
         repository.save(post);
 
         return new ResponseEntity<>(post, HttpStatus.CREATED);
@@ -55,7 +56,7 @@ public class PostController {
 
         repository.deleteById(id);
 
-        return new ResponseEntity<>(repository.save(newPost), HttpStatus.CREATED);
+        return new ResponseEntity<>(repository.save(newPost), HttpStatus.ACCEPTED);
     }
 
     @GetMapping("/{id}")
@@ -70,19 +71,19 @@ public class PostController {
         }
         repository.deleteById(id);
 
-        return new ResponseEntity<>("Post deleted successfully", HttpStatus.OK);
+        return new ResponseEntity<>("Post deleted successfully", HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/all")
     public ResponseEntity<?> deleteAll(){
         if(repository.count() > 0){
             repository.deleteAll();
-            return new ResponseEntity<>("All posts deleted successfully", HttpStatus.OK);
+            return new ResponseEntity<>("All posts deleted successfully", HttpStatus.ACCEPTED);
         }
         return new ResponseEntity<>("Post repository is empty", HttpStatus.NOT_FOUND);
     }
     @GetMapping("/all")
-    public List<Post> getAll() {
-        return repository.findAll();
+    public ResponseEntity<List<Post>> getAll() {
+        return new ResponseEntity<>(repository.findAll(), HttpStatus.OK);
     }
 }

@@ -3,6 +3,7 @@ package com.example.server.model;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,13 +19,18 @@ public class Comment{
 
     @Id
     private String id;
+    @Field("message")
     private String message;
+    @Field("author")
     private User author;
+    @Field("date")
+    private String date;
+    @Field("reply")
     private List<Comment> reply;
 
-    public Comment(User author, String message) {
-        this.author = author;
+    public Comment(String message) {
         this.message = message;
+        this.author = null;
         this.reply = new ArrayList<>();
     }
 
@@ -40,6 +46,14 @@ public class Comment{
         return author;
     }
 
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
     public List<Comment> getReply() {
         return reply;
     }
@@ -50,6 +64,10 @@ public class Comment{
 
     public void setAuthor(User author) {
         this.author = author;
+    }
+
+    public void addReply(Comment comment){
+        this.reply.add(comment);
     }
 
     @Override

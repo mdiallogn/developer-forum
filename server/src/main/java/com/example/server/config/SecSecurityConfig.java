@@ -29,7 +29,7 @@ public class SecSecurityConfig extends WebSecurityConfigurerAdapter {
         User user =  new User("Diallo", "Mamadou", "greer", "Greer", Const.ADMIN);
         auth.inMemoryAuthentication().withUser(user.getUserName())
                 .password(PasswordEncoderHelper.passwordEncoder().encode(user.getPassword()))
-                .roles(user.getRoles());
+                .roles(user.getRole());
     }
 
     @Override
@@ -39,9 +39,9 @@ public class SecSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/api/admin/**").hasRole(Const.ADMIN)
                 .antMatchers("/api/home").permitAll()
-                .antMatchers("/api/user/add").permitAll()
                 .antMatchers("/api/user/**").permitAll()
                 .antMatchers("/api/post/**").permitAll()
+                .antMatchers("/api/comment/**").permitAll()
                 .antMatchers("/api/login*").permitAll()
                 .anyRequest().authenticated();
 

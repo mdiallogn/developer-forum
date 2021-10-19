@@ -65,7 +65,7 @@ public class User implements IUser{
     }
 
     @Override
-    public String getRoles() {
+    public String getRole() {
         return role;
     }
 
@@ -90,7 +90,7 @@ public class User implements IUser{
     }
 
     @Override
-    public void setRoles(String role) {
+    public void setRole(String role) {
         this.role = role;
     }
 
@@ -117,12 +117,12 @@ public class User implements IUser{
                 getLastName().equals(user.getLastName()) &&
                 getUserName().equals(user.getUserName()) &&
                 getPassword().equals(user.getPassword()) &&
-                getRoles().equals(user.getRoles());
+                getRole().equals(user.getRole());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getFirstName(), getLastName(), getUserName(), getRoles());
+        return Objects.hash(getId(), getFirstName(), getLastName(), getUserName(), getRole());
     }
 
 }

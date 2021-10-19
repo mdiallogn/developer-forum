@@ -23,10 +23,9 @@ public class UserController {
     private final ObjectMapper mapper = new ObjectMapper();
 
     @PostMapping("/add")
-    public User add(@RequestBody JsonNode jsonNode) throws JsonProcessingException {
+    public ResponseEntity<User> add(@RequestBody JsonNode jsonNode) throws JsonProcessingException {
         User user = mapper.treeToValue(jsonNode, User.class);
-        userRepository.save(user);
-        return user;
+        return new ResponseEntity<>(userRepository.save(user), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
@@ -56,8 +55,8 @@ public class UserController {
     }
 
     @GetMapping("/all")
-    public List<User> getAll() {
-        return userRepository.findAll();
+    public ResponseEntity<List<User>> getAll() {
+        return new ResponseEntity<>(userRepository.findAll(), HttpStatus.OK);
     }
 
     @DeleteMapping("/all")
