@@ -3,7 +3,7 @@ package com.example.server.controller;
 import com.example.server.exceptions.CommentNotFoundException;
 import com.example.server.model.Comment;
 import com.example.server.model.Post;
-import com.example.server.model.User;
+import com.example.server.model.UserEntity;
 import com.example.server.repository.CommentRepository;
 import com.example.server.repository.PostRepository;
 import com.example.server.repository.UserRepository;
@@ -34,7 +34,7 @@ public class CommentController {
     public ResponseEntity<Comment> add(@RequestBody JsonNode jsonNode, @PathVariable String postId,
                                       @PathVariable String userid) throws JsonProcessingException {
 
-        User author = userRepository.getUserById(userid);
+        UserEntity author = userRepository.getUserById(userid);
         Post post = postRepository.getPostById(postId);
 
         Comment comment = mapper.treeToValue(jsonNode, Comment.class);
@@ -50,15 +50,17 @@ public class CommentController {
     }
 
     @PutMapping("/{postId}/{commentId}")
-    public ResponseEntity<Comment> update(@RequestBody JsonNode jsonNode, @PathVariable String postId, @PathVariable String commentId) {
+    public ResponseEntity<Comment> update(@RequestBody JsonNode jsonNode, @PathVariable String postId, @PathVariable String commentId) throws JsonProcessingException {
         if(!repository.existsById(commentId)){
             throw new CommentNotFoundException(commentId);
         }
 
         Comment comment = repository.getCommentById(commentId);
         Post post = postRepository.getPostById(postId);
-        post.deleteComment(comment);
+        //post.deleteComment(comment);
+        Comment newComment = mapper.treeToValue(jsonNode, Comment.class);
 
+        comment.setMessage(newComment.getMessage());
 
         postRepository.save(post);
         postRepository.deleteById(postId);

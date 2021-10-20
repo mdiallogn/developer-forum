@@ -5,10 +5,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Data
@@ -26,7 +22,7 @@ public class Post{
     @Field("content")
     private String content;
     @Field("author")
-    private User author;
+    private UserEntity author;
     @Field("date")
     private String date;
     @Field("comments")
@@ -52,7 +48,7 @@ public class Post{
         return content;
     }
 
-    public User getAuthor() {
+    public UserEntity getAuthor() {
         return author;
     }
 
@@ -68,7 +64,7 @@ public class Post{
         this.content = content;
     }
 
-    public void setAuthor(User author) {
+    public void setAuthor(UserEntity author) {
         this.author = author;
     }
 

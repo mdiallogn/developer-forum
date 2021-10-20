@@ -2,7 +2,7 @@ package com.example.server.controller;
 
 import com.example.server.exceptions.PostNotFoundException;
 import com.example.server.model.Post;
-import com.example.server.model.User;
+import com.example.server.model.UserEntity;
 import com.example.server.repository.PostRepository;
 import com.example.server.repository.UserRepository;
 import com.example.server.utils.DateGenerator;
@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -31,7 +30,7 @@ public class PostController {
 
     public ResponseEntity<Post> add(@RequestBody JsonNode jsonNode, @PathVariable String userid) {
 
-        User author = userRepository.getUserById(userid);
+        UserEntity author = userRepository.getUserById(userid);
         Post post = mapper.convertValue(jsonNode, Post.class);
         post.setAuthor(author);
         post.setDate(DateGenerator.generateDate());
@@ -49,8 +48,8 @@ public class PostController {
         Post post = repository.getPostById(id);
         Post newPost = mapper.treeToValue(jsonNode, Post.class);
 
-        User user = userRepository.getUserById(post.getAuthor().getId());
-        newPost.setAuthor(user);
+        UserEntity userEntity = userRepository.getUserById(post.getAuthor().getId());
+        newPost.setAuthor(userEntity);
         newPost.setDate(post.getDate());
         System.out.println(newPost);
 

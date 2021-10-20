@@ -4,7 +4,7 @@ import com.example.server.exceptions.PostNotFoundException;
 import com.example.server.exceptions.UserNotFoundException;
 import com.example.server.model.Comment;
 import com.example.server.model.Post;
-import com.example.server.model.User;
+import com.example.server.model.UserEntity;
 import com.example.server.repository.CommentRepository;
 import com.example.server.repository.PostRepository;
 import com.example.server.repository.UserRepository;
@@ -23,21 +23,21 @@ public class ServiceImpl implements Services{
     private final PostRepository postRepository;
 
     @Override
-    public User addUser(User user) {
-        return userRepository.save(user);
+    public UserEntity addUser(UserEntity userEntity) {
+        return userRepository.save(userEntity);
     }
 
     @Override
-    public User updateUser(String idUser, User newUser) {
+    public UserEntity updateUser(String idUser, UserEntity newUserEntity) {
             if(!userRepository.existsById(idUser)){
                throw new UserNotFoundException(idUser);
             }
             userRepository.deleteById(idUser);
-        return userRepository.save(newUser);
+        return userRepository.save(newUserEntity);
     }
 
     @Override
-    public Optional<User> getUserById(String idUser) {
+    public Optional<UserEntity> getUserById(String idUser) {
         return userRepository.findById(idUser);
     }
 
@@ -50,7 +50,7 @@ public class ServiceImpl implements Services{
     }
 
     @Override
-    public List<User> getUserList() {
+    public List<UserEntity> getUserList() {
         return userRepository.findAll();
     }
 

@@ -1,11 +1,12 @@
 package com.example.server.repository;
 
 
-import com.example.server.model.User;
+import com.example.server.model.UserEntity;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface UserRepository extends MongoRepository<User, String> {
+public interface UserRepository extends MongoRepository<UserEntity, String> {
 
-    User getUserByUserName(String userName);
-    User getUserById(String id);
+    UserEntity getUserByUserName(String userName);
+    UserEntity getUserById(String id);
+    UserEntity getUserEntityByUserName(String username);
 }

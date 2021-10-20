@@ -4,15 +4,14 @@ import com.example.server.model.*;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 public interface Services {
 
-    User addUser(User user);
-    User updateUser(String idUser, User newData);
-    Optional<User> getUserById(String idUser);
+    UserEntity addUser(UserEntity userEntity);
+    UserEntity updateUser(String idUser, UserEntity newData);
+    Optional<UserEntity> getUserById(String idUser);
     void deleteUser(String idUser);
-    List<User> getUserList();
+    List<UserEntity> getUserList();
 
     Post addPost(Post post);
     Post updatePost(String idPost, Post post);

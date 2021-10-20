@@ -1,9 +1,9 @@
 package com.example.server.config;
 
-import com.example.server.model.IUser;
 import com.example.server.model.User;
+import com.example.server.model.UserEntity;
 import com.example.server.utils.Const;
-import com.example.server.utils.PasswordEncoderHelper;
+import com.example.server.utils.Encoders;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -16,19 +16,19 @@ import java.util.stream.Stream;
 
 @Configuration
 @EnableWebSecurity
-public class SecSecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final List<IUser> users = Stream.of(
-            new User("Diallo", "Mamadou", "greer", "Greer", Const.ADMIN),
-            new User("Dupont", "Jean Pierre", "jdupont", "Jdupont", Const.USER),
-            new User("Poulain", "Emanuel", "epoulain", "Epoulain", Const.USER)
+    private final List<User> users = Stream.of(
+            new UserEntity("Diallo", "Mamadou", "greer", "Greer", Const.ADMIN),
+            new UserEntity("Dupont", "Jean Pierre", "jdupont", "Jdupont", Const.USER),
+            new UserEntity("Poulain", "Emanuel", "epoulain", "Epoulain", Const.USER)
     ).collect(Collectors.toList());
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        User user =  new User("Diallo", "Mamadou", "greer", "Greer", Const.ADMIN);
+        User user =  new UserEntity("Diallo", "Mamadou", "greer", "Greer", Const.ADMIN);
         auth.inMemoryAuthentication().withUser(user.getUserName())
-                .password(PasswordEncoderHelper.passwordEncoder().encode(user.getPassword()))
+                .password(Encoders.userPasswordEncoder().encode(user.getPassword()))
                 .roles(user.getRole());
     }
 
@@ -46,5 +46,4 @@ public class SecSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated();
 
     }
-
 }

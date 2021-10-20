@@ -1,7 +1,7 @@
 package com.example.server.controller;
 
 import com.example.server.exceptions.UserNotFoundException;
-import com.example.server.model.User;
+import com.example.server.model.UserEntity;
 import com.example.server.repository.UserRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,26 +23,32 @@ public class UserController {
     private final UserRepository userRepository;
     private final ObjectMapper mapper = new ObjectMapper();
 
+    /**
+     *
+     * @param jsonNode
+     * @return
+     * @throws JsonProcessingException
+     */
     @PostMapping("/add")
-    public ResponseEntity<User> add(@RequestBody JsonNode jsonNode) throws JsonProcessingException {
-        User user = mapper.treeToValue(jsonNode, User.class);
-        return new ResponseEntity<>(userRepository.save(user), HttpStatus.CREATED);
+    public ResponseEntity<UserEntity> add(@RequestBody JsonNode jsonNode) throws JsonProcessingException {
+        UserEntity userEntity = mapper.treeToValue(jsonNode, UserEntity.class);
+        return new ResponseEntity<>(userRepository.save(userEntity), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<User> update(@PathVariable("id") String id, @RequestBody JsonNode jsonNode) throws JsonProcessingException {
+    public ResponseEntity<UserEntity> update(@PathVariable("id") String id, @RequestBody JsonNode jsonNode) throws JsonProcessingException {
         if(!userRepository.existsById(id)){
             throw new UserNotFoundException(id);
         }
         userRepository.deleteById(id);
-        User user = mapper.treeToValue(jsonNode, User.class);
-        return new ResponseEntity<>(userRepository.save(user), HttpStatus.OK);
+        UserEntity userEntity = mapper.treeToValue(jsonNode, UserEntity.class);
+        return new ResponseEntity<>(userRepository.save(userEntity), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> getById(@PathVariable("id") String id) {
+    public ResponseEntity<UserEntity> getById(@PathVariable("id") String id) {
         System.out.println("id : "+id);
-        Optional<User> user = userRepository.findById(id);
+        Optional<UserEntity> user = userRepository.findById(id);
         return user.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
@@ -55,7 +62,8 @@ public class UserController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<User>> getAll() {
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public ResponseEntity<List<UserEntity>> getAll() {
         return new ResponseEntity<>(userRepository.findAll(), HttpStatus.OK);
     }
 

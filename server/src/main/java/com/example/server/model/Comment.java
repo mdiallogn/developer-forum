@@ -22,7 +22,7 @@ public class Comment{
     @Field("message")
     private String message;
     @Field("author")
-    private User author;
+    private UserEntity author;
     @Field("date")
     private String date;
     @Field("reply")
@@ -42,7 +42,7 @@ public class Comment{
         return message;
     }
 
-    public User getAuthor() {
+    public UserEntity getAuthor() {
         return author;
     }
 
@@ -62,7 +62,7 @@ public class Comment{
         this.message = message;
     }
 
-    public void setAuthor(User author) {
+    public void setAuthor(UserEntity author) {
         this.author = author;
     }
 
