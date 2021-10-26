@@ -1,9 +1,9 @@
 package com.example.server.repository;
 
-import com.example.server.model.Post;
+import com.example.server.model.post.PostEntity;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface PostRepository extends MongoRepository<Post, String> {
+public interface PostRepository extends MongoRepository<PostEntity, String> {
 
-    Post getPostById(String id);
+    PostEntity getPostById(String id);
 }

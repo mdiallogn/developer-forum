@@ -1,10 +1,9 @@
 package com.example.server.controller;
 
-import com.example.server.exceptions.PostNotFoundException;
-import com.example.server.model.Post;
-import com.example.server.model.UserEntity;
-import com.example.server.repository.PostRepository;
-import com.example.server.repository.UserRepository;
+import com.example.server.model.post.PostEntity;
+import com.example.server.model.user.UserEntity;
+import com.example.server.services.post.PostServiceImplement;
+import com.example.server.services.user.UserServiceImplement;
 import com.example.server.utils.DateGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -22,67 +21,59 @@ import java.util.List;
 @RequestMapping("/api/post")
 public class PostController {
 
-    private final PostRepository repository;
-    private final UserRepository userRepository;
+    private final PostServiceImplement postServiceImplement;
+    private final UserServiceImplement userServiceImplement;
     private final ObjectMapper mapper = new ObjectMapper();
 
     @PostMapping("/add/{userid}")
 
-    public ResponseEntity<Post> add(@RequestBody JsonNode jsonNode, @PathVariable String userid) {
+    public ResponseEntity<PostEntity> add(@RequestBody JsonNode jsonNode, @PathVariable String userid) {
 
-        UserEntity author = userRepository.getUserById(userid);
-        Post post = mapper.convertValue(jsonNode, Post.class);
-        post.setAuthor(author);
-        post.setDate(DateGenerator.generateDate());
-        post.setComments(new ArrayList<>());
-        repository.save(post);
+        UserEntity author = userServiceImplement.getById(userid);
+        PostEntity postEntity = mapper.convertValue(jsonNode, PostEntity.class);
+        postEntity.setAuthor(author);
+        postEntity.setDate(DateGenerator.generateDate());
+        postEntity.setCommentEntities(new ArrayList<>());
 
-        return new ResponseEntity<>(post, HttpStatus.CREATED);
+        postServiceImplement.add(postEntity);
+
+        return new ResponseEntity<>(postEntity, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Post> update(@RequestBody JsonNode jsonNode, @PathVariable String id) throws JsonProcessingException {
-        if(!repository.existsById(id)){
-            throw new PostNotFoundException(id);
-        }
-        Post post = repository.getPostById(id);
-        Post newPost = mapper.treeToValue(jsonNode, Post.class);
+    public ResponseEntity<PostEntity> update(@RequestBody JsonNode jsonNode, @PathVariable String id) throws JsonProcessingException {
 
-        UserEntity userEntity = userRepository.getUserById(post.getAuthor().getId());
-        newPost.setAuthor(userEntity);
-        newPost.setDate(post.getDate());
-        System.out.println(newPost);
+        PostEntity postEntity = postServiceImplement.getById(id);
+        PostEntity newPostEntity = mapper.treeToValue(jsonNode, PostEntity.class);
 
-        repository.deleteById(id);
+        UserEntity userEntity = userServiceImplement.getById(postEntity.getAuthor().getId());
+        newPostEntity.setAuthor(userEntity);
+        newPostEntity.setDate(postEntity.getDate());
 
-        return new ResponseEntity<>(repository.save(newPost), HttpStatus.ACCEPTED);
+        postServiceImplement.update(id, newPostEntity);
+
+        return new ResponseEntity<>(newPostEntity, HttpStatus.ACCEPTED);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Post> getById(@PathVariable String id) {
-        return new ResponseEntity<>(repository.getPostById(id), HttpStatus.OK);
+    public ResponseEntity<PostEntity> getById(@PathVariable String id) {
+        return new ResponseEntity<>(postServiceImplement.getById(id), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteById(@PathVariable String id) {
-        if(!repository.existsById(id)){
-            throw new PostNotFoundException(id);
-        }
-        repository.deleteById(id);
-
+        postServiceImplement.deleteById(id);
         return new ResponseEntity<>("Post deleted successfully", HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/all")
     public ResponseEntity<?> deleteAll(){
-        if(repository.count() > 0){
-            repository.deleteAll();
-            return new ResponseEntity<>("All posts deleted successfully", HttpStatus.ACCEPTED);
-        }
+        postServiceImplement.deleteAll();
         return new ResponseEntity<>("Post repository is empty", HttpStatus.NOT_FOUND);
     }
+
     @GetMapping("/all")
-    public ResponseEntity<List<Post>> getAll() {
-        return new ResponseEntity<>(repository.findAll(), HttpStatus.OK);
+    public ResponseEntity<List<PostEntity>> getAll() {
+        return new ResponseEntity<>(postServiceImplement.findAll(), HttpStatus.OK);
     }
 }

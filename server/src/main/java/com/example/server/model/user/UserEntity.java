@@ -1,4 +1,4 @@
-package com.example.server.model;
+package com.example.server.model.user;
 
 import lombok.Data;
 import lombok.Getter;

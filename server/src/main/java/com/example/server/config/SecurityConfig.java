@@ -1,7 +1,7 @@
 package com.example.server.config;
 
-import com.example.server.model.User;
-import com.example.server.model.UserEntity;
+import com.example.server.model.user.User;
+import com.example.server.model.user.UserEntity;
 import com.example.server.utils.Const;
 import com.example.server.utils.Encoders;
 import org.springframework.context.annotation.Configuration;

@@ -1,9 +1,9 @@
 package com.example.server.repository;
 
-import com.example.server.model.Comment;
+import com.example.server.model.comment.CommentEntity;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface CommentRepository extends MongoRepository<Comment, String> {
+public interface CommentRepository extends MongoRepository<CommentEntity, String> {
 
-    Comment getCommentById(String id);
+    CommentEntity getCommentById(String id);
 }

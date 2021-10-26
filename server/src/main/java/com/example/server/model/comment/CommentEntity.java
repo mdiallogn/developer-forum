@@ -1,5 +1,6 @@
-package com.example.server.model;
+package com.example.server.model.comment;
 
+import com.example.server.model.user.UserEntity;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -15,7 +16,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @Document(collection = "comment")
-public class Comment{
+public class CommentEntity implements Comment{
 
     @Id
     private String id;
@@ -26,48 +27,57 @@ public class Comment{
     @Field("date")
     private String date;
     @Field("reply")
-    private List<Comment> reply;
+    private List<CommentEntity> reply;
 
-    public Comment(String message) {
+    public CommentEntity(String message) {
         this.message = message;
         this.author = null;
         this.reply = new ArrayList<>();
     }
 
+    @Override
     public String getId() {
         return id;
     }
 
+    @Override
     public String getMessage() {
         return message;
     }
 
+    @Override
     public UserEntity getAuthor() {
         return author;
     }
 
+    @Override
     public String getDate() {
         return date;
     }
 
+    @Override
     public void setDate(String date) {
         this.date = date;
     }
 
-    public List<Comment> getReply() {
+    @Override
+    public List<CommentEntity> getReply() {
         return reply;
     }
 
+    @Override
     public void setMessage(String message) {
         this.message = message;
     }
 
+    @Override
     public void setAuthor(UserEntity author) {
         this.author = author;
     }
 
-    public void addReply(Comment comment){
-        this.reply.add(comment);
+    @Override
+    public void addReply(CommentEntity commentEntity){
+        this.reply.add(commentEntity);
     }
 
     @Override
@@ -84,11 +94,11 @@ public class Comment{
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Comment comment = (Comment) o;
-        return  getId().equals(comment.getId()) &&
-                getMessage().equals(comment.getMessage()) &&
-                getAuthor().equals(comment.getAuthor()) &&
-                getReply().equals(comment.getReply());
+        CommentEntity commentEntity = (CommentEntity) o;
+        return  getId().equals(commentEntity.getId()) &&
+                getMessage().equals(commentEntity.getMessage()) &&
+                getAuthor().equals(commentEntity.getAuthor()) &&
+                getReply().equals(commentEntity.getReply());
     }
 
     @Override

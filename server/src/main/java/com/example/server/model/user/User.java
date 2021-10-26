@@ -1,4 +1,4 @@
-package com.example.server.model;
+package com.example.server.model.user;
 
 import java.util.Set;
 import java.util.UUID;
