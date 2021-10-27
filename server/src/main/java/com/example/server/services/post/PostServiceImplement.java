@@ -21,6 +21,9 @@ public class PostServiceImplement implements PostService{
 
     @Override
     public PostEntity getById(String id) {
+        if(!repository.existsById(id)){
+            throw new PostNotFoundException(id);
+        }
         return repository.getPostById(id);
     }
 

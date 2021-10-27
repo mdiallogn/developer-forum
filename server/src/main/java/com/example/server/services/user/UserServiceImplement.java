@@ -1,5 +1,6 @@
 package com.example.server.services.user;
 
+import com.example.server.exceptions.PostNotFoundException;
 import com.example.server.exceptions.UserNotFoundException;
 import com.example.server.model.user.UserEntity;
 import com.example.server.repository.UserRepository;
@@ -21,6 +22,9 @@ public class UserServiceImplement implements UserService{
 
     @Override
     public UserEntity getById(String id) {
+        if(!repository.existsById(id)){
+            throw new UserNotFoundException(id);
+        }
         return repository.getUserById(id);
     }
 
