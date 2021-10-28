@@ -3,13 +3,13 @@ package com.example.server.services.post;
 import com.example.server.exceptions.PostNotFoundException;
 import com.example.server.model.post.PostEntity;
 import com.example.server.repository.PostRepository;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class PostServiceImplement implements PostService{
 
     private final PostRepository repository;

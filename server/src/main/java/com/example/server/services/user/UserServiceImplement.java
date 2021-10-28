@@ -1,6 +1,5 @@
 package com.example.server.services.user;
 
-import com.example.server.exceptions.PostNotFoundException;
 import com.example.server.exceptions.UserNotFoundException;
 import com.example.server.model.user.UserEntity;
 import com.example.server.repository.UserRepository;

@@ -1,4 +1,4 @@
-package com.example.server.config;
+package com.example.server.config.security;
 
 import com.example.server.model.user.User;
 import com.example.server.model.user.UserEntity;

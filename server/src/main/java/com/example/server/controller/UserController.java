@@ -1,14 +1,13 @@
 package com.example.server.controller;
 
 import com.example.server.model.user.UserEntity;
-import com.example.server.services.user.UserServiceImplement;
+import com.example.server.services.user.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,7 +17,7 @@ import java.util.List;
 @RequestMapping("api/user")
 public class UserController {
 
-    private final UserServiceImplement userService;
+    private final UserService userService;
     private final ObjectMapper mapper = new ObjectMapper();
 
 
@@ -46,7 +45,6 @@ public class UserController {
     }
 
     @GetMapping("/all")
-    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<List<UserEntity>> getAll() {
         return new ResponseEntity<>(userService.findAll(), HttpStatus.OK);
     }
