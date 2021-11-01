@@ -1,21 +1,20 @@
 package com.example.server.controller;
 
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@RestController
+@RequestMapping("/api")
 public class Controller {
-    /*
-    @MessageMapping("/api")
-    @SendTo("/home")
+
+    @GetMapping("/home")
     public String homePage(){
-        return  "Welcome";
+        return  "Home page !";
     }
 
     @GetMapping("/admin")
     public String adminHome(){
         return "Admin page";
     }
-     */
 }

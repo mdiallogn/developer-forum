@@ -1,15 +1,16 @@
 package com.example.server.services.user;
 
+import com.example.server.model.user.User;
 import com.example.server.model.user.UserEntity;
 
 import java.util.List;
 
 public interface UserService {
 
-    UserEntity add (UserEntity user);
-    UserEntity getById(String id);
-    UserEntity update(String id, UserEntity user);
-    List<UserEntity> findAll();
+    User add (User user);
+    User getById(String id);
+    User update(String id, User user);
+    List<User> findAll();
     void deleteById(String id);
     void deleteAll();
 }

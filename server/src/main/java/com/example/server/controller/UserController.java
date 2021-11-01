@@ -1,5 +1,6 @@
 package com.example.server.controller;
 
+import com.example.server.model.user.User;
 import com.example.server.model.user.UserEntity;
 import com.example.server.services.user.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -22,19 +23,19 @@ public class UserController {
 
 
     @PostMapping("/add")
-    public ResponseEntity<UserEntity> add(@RequestBody JsonNode jsonNode) throws JsonProcessingException {
-        UserEntity userEntity = mapper.treeToValue(jsonNode, UserEntity.class);
-        return new ResponseEntity<>(userService.add(userEntity), HttpStatus.CREATED);
+    public ResponseEntity<User> add(@RequestBody JsonNode jsonNode) throws JsonProcessingException {
+        User user = mapper.treeToValue(jsonNode, UserEntity.class);
+        return new ResponseEntity<>(userService.add(user), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserEntity> update(@PathVariable("id") String id, @RequestBody JsonNode jsonNode) throws JsonProcessingException {
-        UserEntity userEntity = mapper.treeToValue(jsonNode, UserEntity.class);
-        return new ResponseEntity<>(userService.update(id, userEntity), HttpStatus.OK);
+    public ResponseEntity<User> update(@PathVariable("id") String id, @RequestBody JsonNode jsonNode) throws JsonProcessingException {
+        User user = mapper.treeToValue(jsonNode, UserEntity.class);
+        return new ResponseEntity<>(userService.update(id, user), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserEntity> getById(@PathVariable("id") String id) {
+    public ResponseEntity<User> getById(@PathVariable("id") String id) {
         return new ResponseEntity<>(userService.getById(id), HttpStatus.OK);
     }
 
@@ -45,13 +46,13 @@ public class UserController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<UserEntity>> getAll() {
+    public ResponseEntity<List<User>> getAll() {
         return new ResponseEntity<>(userService.findAll(), HttpStatus.OK);
     }
 
     @DeleteMapping("/all")
     public ResponseEntity<?> deleteAll(){
         userService.deleteAll();
-        return  ResponseEntity.ok("All users Deleted successfully");
+        return  ResponseEntity.ok("All users Deleted successfully !");
     }
 }

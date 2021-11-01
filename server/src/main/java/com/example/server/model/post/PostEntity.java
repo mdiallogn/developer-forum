@@ -1,13 +1,15 @@
 package com.example.server.model.post;
 
-import com.example.server.model.comment.CommentEntity;
-import com.example.server.model.user.UserEntity;
+import com.example.server.model.comment.Comment;
+import com.example.server.model.user.User;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 @Data
 @Setter
@@ -24,18 +26,18 @@ public class PostEntity implements Post{
     @Field("content")
     private String content;
     @Field("author")
-    private UserEntity author;
+    private User author;
     @Field("date")
     private String date;
     @Field("comments")
-    private List<CommentEntity> commentEntities;
+    private List<Comment> comments;
 
     public PostEntity(String subject, String content) {
         this.subject = subject;
         this.content = content;
         this.author = null;
         this.date = null;
-        this.commentEntities = new ArrayList<>();
+        this.comments = new ArrayList<>();
     }
 
     @Override
@@ -54,7 +56,7 @@ public class PostEntity implements Post{
     }
 
     @Override
-    public UserEntity getAuthor() {
+    public User getAuthor() {
         return author;
     }
 
@@ -74,28 +76,33 @@ public class PostEntity implements Post{
     }
 
     @Override
-    public void setAuthor(UserEntity author) {
+    public void setAuthor(User author) {
         this.author = author;
     }
 
     @Override
-    public void setCommentEntities(List<CommentEntity> commentEntities) {
-        this.commentEntities = commentEntities;
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
 
     @Override
-    public List<CommentEntity> getCommentEntities() {
-        return commentEntities;
+    public List<Comment> getComments() {
+        return comments;
     }
 
     @Override
-    public void addComment(CommentEntity commentEntity){
-        this.commentEntities.add(commentEntity);
+    public void addComment(Comment comment){
+        this.comments.add(comment);
     }
 
     @Override
-    public void deleteComment(CommentEntity commentEntity){
-        this.commentEntities.remove(commentEntity);
+    public void deleteComment(Comment comment){
+        this.comments.remove(comment);
+    }
+
+    @Override
+    public void setDate(String date){
+        this.date = date;
     }
 
     @Override
@@ -105,7 +112,7 @@ public class PostEntity implements Post{
                 ", subject='" + subject + '\'' +
                 ", content='" + content + '\'' +
                 ", author=" + author +
-                ", comments=" + commentEntities +
+                ", comments=" + comments +
                 '}';
     }
 
@@ -118,11 +125,11 @@ public class PostEntity implements Post{
                 getSubject().equals(postEntity.getSubject()) &&
                 getContent().equals(postEntity.getContent()) &&
                 getAuthor().equals(postEntity.getAuthor()) &&
-                getCommentEntities().equals(postEntity.getCommentEntities());
+                getComments().equals(postEntity.getComments());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getSubject(), getContent(), getAuthor(), getCommentEntities());
+        return Objects.hash(getId(), getSubject(), getContent(), getAuthor(), getComments());
     }
 }

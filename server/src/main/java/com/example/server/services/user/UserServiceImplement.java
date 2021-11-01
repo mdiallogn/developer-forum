@@ -1,6 +1,7 @@
 package com.example.server.services.user;
 
 import com.example.server.exceptions.UserNotFoundException;
+import com.example.server.model.user.User;
 import com.example.server.model.user.UserEntity;
 import com.example.server.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +16,7 @@ public class UserServiceImplement implements UserService{
     private final UserRepository repository;
 
     @Override
-    public UserEntity add(UserEntity user) {
+    public User add(User user) {
         return repository.save(user);
     }
 
@@ -28,7 +29,7 @@ public class UserServiceImplement implements UserService{
     }
 
     @Override
-    public UserEntity update(String id, UserEntity user) {
+    public User update(String id, User user) {
         if(!repository.existsById(id)){
             throw new UserNotFoundException(id);
         }
@@ -37,7 +38,7 @@ public class UserServiceImplement implements UserService{
     }
 
     @Override
-    public List<UserEntity> findAll() {
+    public List<User> findAll() {
         return repository.findAll();
     }
 
