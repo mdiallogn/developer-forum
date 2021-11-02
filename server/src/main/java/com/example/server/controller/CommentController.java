@@ -1,7 +1,10 @@
 package com.example.server.controller;
 
+import com.example.server.model.comment.Comment;
 import com.example.server.model.comment.CommentEntity;
+import com.example.server.model.post.Post;
 import com.example.server.model.post.PostEntity;
+import com.example.server.model.user.User;
 import com.example.server.model.user.UserEntity;
 import com.example.server.services.comment.CommentService;
 import com.example.server.services.post.PostService;
@@ -30,64 +33,64 @@ public class CommentController {
     private final ObjectMapper mapper = new ObjectMapper();
 
     @PostMapping("/add/{postId}/{userid}")
-    public ResponseEntity<CommentEntity> add(@RequestBody JsonNode jsonNode, @PathVariable String postId,
-                                             @PathVariable String userid) throws JsonProcessingException {
+    public ResponseEntity<Comment> add(@RequestBody JsonNode jsonNode, @PathVariable String postId,
+                                       @PathVariable String userid) throws JsonProcessingException {
 
-        UserEntity author = userService.getById(userid);
-        PostEntity postEntity = postService.getById(postId);
+        User author = userService.getById(userid);
+        Post post = postService.getById(postId);
 
-        CommentEntity commentEntity = mapper.treeToValue(jsonNode, CommentEntity.class);
+        Comment comment = mapper.treeToValue(jsonNode, CommentEntity.class);
 
-        commentEntity.setDate(DateGenerator.generateDate());
-        commentEntity.setAuthor(author);
-        commentEntity.setReply(new ArrayList<>());
+        comment.setDate(DateGenerator.generateDate());
+        comment.setAuthor(author);
+        comment.setReply(new ArrayList<>());
 
-        postEntity.addComment(commentEntity);
+        post.addComment(comment);
 
-        commentService.add(commentEntity);
+        commentService.add(comment);
 
-        postService.add(postEntity);
+        postService.add(post);
 
-        return new ResponseEntity<>(commentEntity, HttpStatus.CREATED);
+        return new ResponseEntity<>(comment, HttpStatus.CREATED);
     }
 
     @PutMapping("/{postId}/{commentId}")
-    public ResponseEntity<CommentEntity> update(@RequestBody JsonNode jsonNode, @PathVariable String postId, @PathVariable String commentId) throws JsonProcessingException {
+    public ResponseEntity<Comment> update(@RequestBody JsonNode jsonNode, @PathVariable String postId, @PathVariable String commentId) throws JsonProcessingException {
 
-        CommentEntity commentEntity = commentService.getById(commentId);
-        PostEntity postEntity = postService.getById(postId);
+        Comment comment = commentService.getById(commentId);
+        Post post = postService.getById(postId);
 
-        CommentEntity newCommentEntity = mapper.treeToValue(jsonNode, CommentEntity.class);
+        CommentEntity newComment = mapper.treeToValue(jsonNode, CommentEntity.class);
 
-        commentEntity.setMessage(newCommentEntity.getMessage());
-        postEntity.addComment(commentEntity);
+        comment.setMessage(newComment.getMessage());
+        post.addComment(comment);
 
-        postService.update(postId, postEntity);
+        postService.update(postId, post);
 
-        return new ResponseEntity<>(commentEntity, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(comment, HttpStatus.ACCEPTED);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CommentEntity> getById(@PathVariable String id) {
+    public ResponseEntity<Comment> getById(@PathVariable String id) {
         return new ResponseEntity<>(commentService.getById(id), HttpStatus.OK);
     }
 
     @DeleteMapping("/{postId}/{commentId}")
     public ResponseEntity<String> deleteById(@PathVariable String postId, @PathVariable String commentId) {
 
-        PostEntity postEntity = postService.getById(postId);
-        CommentEntity commentEntity = commentService.getById(commentId);
+        Post post = postService.getById(postId);
+        Comment comment = commentService.getById(commentId);
 
-        postEntity.deleteComment(commentEntity);
+        post.deleteComment(comment);
 
         commentService.deleteById(commentId);
-        postService.update(postId, postEntity);
+        postService.update(postId, post);
 
         return ResponseEntity.ok("Comment deleted successfully !");
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<CommentEntity>> getAll() {
+    public ResponseEntity<List<Comment>> getAll() {
         return new ResponseEntity<>(commentService.findAll(), HttpStatus.OK);
     }
 

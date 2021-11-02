@@ -1,6 +1,8 @@
 package com.example.server.controller;
 
+import com.example.server.model.post.Post;
 import com.example.server.model.post.PostEntity;
+import com.example.server.model.user.User;
 import com.example.server.model.user.UserEntity;
 import com.example.server.services.post.PostService;
 import com.example.server.services.post.PostServiceImplement;
@@ -31,36 +33,36 @@ public class PostController {
 
     @PostMapping("/add/{userid}")
 
-    public ResponseEntity<PostEntity> add(@RequestBody JsonNode jsonNode, @PathVariable String userid) {
+    public ResponseEntity<Post> add(@RequestBody JsonNode jsonNode, @PathVariable String userid) {
 
-        UserEntity author = userService.getById(userid);
-        PostEntity postEntity = mapper.convertValue(jsonNode, PostEntity.class);
-        postEntity.setAuthor(author);
-        postEntity.setDate(DateGenerator.generateDate());
-        postEntity.setCommentEntities(new ArrayList<>());
+        User author = userService.getById(userid);
+        Post post = mapper.convertValue(jsonNode, PostEntity.class);
+        post.setAuthor(author);
+        post.setDate(DateGenerator.generateDate());
+        post.setComments(new ArrayList<>());
 
-        postService.add(postEntity);
+        postService.add(post);
 
-        return new ResponseEntity<>(postEntity, HttpStatus.CREATED);
+        return new ResponseEntity<>(post, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PostEntity> update(@RequestBody JsonNode jsonNode, @PathVariable String id) throws JsonProcessingException {
+    public ResponseEntity<Post> update(@RequestBody JsonNode jsonNode, @PathVariable String id) throws JsonProcessingException {
 
-        PostEntity postEntity = postService.getById(id);
-        PostEntity newPostEntity = mapper.treeToValue(jsonNode, PostEntity.class);
+        Post post = postService.getById(id);
+        Post newPost = mapper.treeToValue(jsonNode, PostEntity.class);
 
-        UserEntity userEntity = userService.getById(postEntity.getAuthor().getId());
-        newPostEntity.setAuthor(userEntity);
-        newPostEntity.setDate(postEntity.getDate());
+        User userEntity = userService.getById(post.getAuthor().getId());
+        newPost.setAuthor(userEntity);
+        newPost.setDate(post.getDate());
 
-        postService.update(id, newPostEntity);
+        postService.update(id, newPost);
 
-        return new ResponseEntity<>(newPostEntity, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(newPost, HttpStatus.ACCEPTED);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PostEntity> getById(@PathVariable String id) {
+    public ResponseEntity<Post> getById(@PathVariable String id) {
         return new ResponseEntity<>(postService.getById(id), HttpStatus.OK);
     }
 
@@ -77,7 +79,7 @@ public class PostController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<PostEntity>> getAll() {
+    public ResponseEntity<List<Post>> getAll() {
         return new ResponseEntity<>(postService.findAll(), HttpStatus.OK);
     }
 }

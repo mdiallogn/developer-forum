@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { UserComponent } from './components/user/user.component';
 import { PostComponent } from './components/post/post.component';
 import { CommentComponent } from './components/comment/comment.component';
+import {FormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { CommentComponent } from './components/comment/comment.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
