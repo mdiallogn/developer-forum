@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import {Stomp} from '@stomp/stompjs';
-import * as SockJS from 'sockjs-client';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -10,4 +9,12 @@ import * as SockJS from 'sockjs-client';
 export class AppComponent {
   title = 'Web Socket Test';
   description = 'Middleware Project';
+  currentRoute: string = '';
+  constructor(private router: Router){
+    console.log(router.url);
+    router.events.subscribe(event => 
+           {
+              this.currentRoute = this.router.url.replace('/', '');
+           });
+    }
 }
