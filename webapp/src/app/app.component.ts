@@ -27,7 +27,7 @@ export class AppComponent {
   }
 
   connect() {
-    const socket = new SockJS('http://localhost:8080/gkz-stomp-endpoint');
+    const socket = new SockJS('http://localhost:8000/gkz-stomp-endpoint');
     // @ts-ignore
     this.stompClient = Stomp.over(socket);
 
@@ -38,8 +38,8 @@ export class AppComponent {
       console.log('Connected: ' + frame);
 
       // @ts-ignore
-      _this.stompClient.subscribe('/api/hi', function (hello){
-        _this.showGreeting(JSON.parse(hello.body).greeting);
+      _this.stompClient.subscribe('/api/hi', function (response){
+        _this.showGreeting(JSON.parse(response.body));
       });
     });
   }
