@@ -12,6 +12,7 @@ import { NotfoundComponent } from './notfound/notfound.component';
 import { MessagetestComponent } from './messagetest/messagetest.component';
 import { HeaderComponent } from './header/header.component';
 import { LoginComponent } from './login/login.component';
+import { SignupComponent } from './signup/signup.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { LoginComponent } from './login/login.component';
     NotfoundComponent,
     MessagetestComponent,
     HeaderComponent,
-    LoginComponent
+    LoginComponent,
+    SignupComponent
   ],
   imports: [
     BrowserModule,
