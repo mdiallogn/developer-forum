@@ -11,8 +11,9 @@ const routes: Routes = [
   { path: 'test', component: MessagetestComponent },
   { path: 'login', component: LoginComponent},
   { path: 'signup', component: SignupComponent},
+  { path: '404', component: NotfoundComponent},
   { path: '',   redirectTo: '/home', pathMatch: 'full' },
-  { path: '**', component: NotfoundComponent },
+  { path: '**', redirectTo: '404' },
 ];
 
 @NgModule({
