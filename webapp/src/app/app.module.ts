@@ -7,13 +7,19 @@ import { UserComponent } from './components/user/user.component';
 import { PostComponent } from './components/post/post.component';
 import { CommentComponent } from './components/comment/comment.component';
 import {FormsModule} from "@angular/forms";
+import { HomeComponent } from './home/home.component';
+import { NotfoundComponent } from './notfound/notfound.component';
+import { MessagetestComponent } from './messagetest/messagetest.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     UserComponent,
     PostComponent,
-    CommentComponent
+    CommentComponent,
+    HomeComponent,
+    NotfoundComponent,
+    MessagetestComponent
   ],
   imports: [
     BrowserModule,
