@@ -13,7 +13,6 @@ import java.util.Objects;
 @Data
 @Setter
 @Getter
-@NoArgsConstructor
 @Document(collection = "user")
 public class UserEntity implements User {
 
@@ -31,6 +30,7 @@ public class UserEntity implements User {
     private String role;
 
 
+    public UserEntity() {}
     public UserEntity(String firstName, String lastName, String userName, String password, String role) {
         this.firstName = firstName;
         this.lastName = lastName;
