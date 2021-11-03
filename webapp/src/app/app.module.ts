@@ -13,6 +13,7 @@ import { MessagetestComponent } from './messagetest/messagetest.component';
 import { HeaderComponent } from './header/header.component';
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
+import { QuestionComponent } from './question/question.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { SignupComponent } from './signup/signup.component';
     MessagetestComponent,
     HeaderComponent,
     LoginComponent,
-    SignupComponent
+    SignupComponent,
+    QuestionComponent
   ],
   imports: [
     BrowserModule,
