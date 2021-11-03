@@ -15,6 +15,9 @@ import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
 import { QuestionComponent } from './question/question.component';
 import { PostDetailsComponent } from './post-details/post-details.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientModule } from '@angular/common/http';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -32,9 +35,12 @@ import { PostDetailsComponent } from './post-details/post-details.component';
     PostDetailsComponent
   ],
   imports: [
+    HttpClientModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot(),
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

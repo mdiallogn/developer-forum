@@ -2,15 +2,14 @@
     <div class="modal-bodies">
         <div class="modal-body modal-body-step-1 is-showing">
             <div class="title">Création de compte</div>
-            <form>
-                <input type="text" placeholder="Nom de famille *" />
-                <input type="text" placeholder="Prénom(s) *" />
-                <input type="text" placeholder="Pseudo*" />
-                <input type="email" placeholder="E-Mail*" />
-                <input type="password" placeholder="Mot de passe*" />
-                <input type="password" placeholder="Confirmer le mot de passe*" />
+            <form class="form" #f="ngForm" (ngSubmit)="submit(f)" novalidate>
+                <input class="form-control" name="lastName" ngModel #lastName="ngModel" type="text" placeholder="Nom de famille *" minlength="2" required>
+                <input class="form-control" name="firstName" ngModel #firstName="ngModel" type="text" placeholder="Prénom(s) *" minlength="2" required>
+                <input class="form-control" name="pseudo" ngModel #pseudo="ngModel" type="text" placeholder="Pseudo*" minlength="2" required>
+                <input class="form-control" name="password" #password="ngModel" ngModel type="password" placeholder="Mot de passe*" required>
+                <input class="form-control" name="rePassword" #rePassword="ngModel" ngModel type="password" placeholder="Confirmer le mot de passe*" required>
                 <div class="text-center">
-                    <div class="button">Créer</div>
+                    <button class="btn button">Créer</button>
                 </div>
                 <div class="text-center mt-2">
                     <a routerLink="/home">Revenir à l'accueil </a>
