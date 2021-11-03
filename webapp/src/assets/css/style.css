@@ -2010,12 +2010,11 @@ h5:hover {
     margin-left: 14px;
     position: relative;
     top: 2px;
-    color: #fd6372;
+    color: #a8a0a1;
     cursor: pointer;
     -webkit-transition: color 0.3s ease;
     -o-transition: color 0.3s ease;
     transition: color 0.3s ease;
-    display: none;
 }
 
 .comment-box .comment-head i:hover {
