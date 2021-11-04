@@ -6,8 +6,6 @@ import com.example.server.model.user.UserEntity;
 import com.example.server.services.user.UserService;
 import com.example.server.utils.JwtUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -43,6 +41,7 @@ public class UserController {
         } catch (Exception ex) {
             throw new Exception("invalid username/password");
         }
+        System.out.println("Token generated:: "+jwtUtil.generateToken(authRequest.getUserName()));
         return jwtUtil.generateToken(authRequest.getUserName());
     }
 
@@ -62,14 +61,14 @@ public class UserController {
         return new ResponseEntity<>("Deleted successfully !", HttpStatus.OK);
     }
 
-    @GetMapping()
+    @GetMapping("/all")
     public ResponseEntity<List<User>> getAll() {
         return new ResponseEntity<>(userService.findAll(), HttpStatus.OK);
     }
 
     @DeleteMapping()
-    public ResponseEntity<?> deleteAll(){
+    public ResponseEntity<?> deleteAll() {
         userService.deleteAll();
-        return  ResponseEntity.ok("All users Deleted successfully");
+        return ResponseEntity.ok("All users Deleted successfully");
     }
 }
