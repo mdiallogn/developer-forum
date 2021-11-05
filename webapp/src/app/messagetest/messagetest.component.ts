@@ -30,7 +30,7 @@ export class MessagetestComponent implements OnInit {
   }
 
   connect() {
-    const socket = new SockJS('http://localhost:8000/gkz-stomp-endpoint');
+    const socket = new SockJS('http://127.0.0.1:8000/gkz-stomp-endpoint');
     // @ts-ignore
     this.stompClient = Stomp.over(socket);
 
@@ -42,6 +42,7 @@ export class MessagetestComponent implements OnInit {
 
       // @ts-ignore
       _this.stompClient.subscribe('/api/hi', function (response){
+        console.log("Server response", response)
         _this.showGreeting(JSON.parse(response.body));
       });
     });

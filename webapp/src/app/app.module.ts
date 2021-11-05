@@ -19,6 +19,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr';
 import {JwtClientService} from "./services/jwt-client.service";
+import { CookieService } from 'ngx-cookie-service';
+import { SignoutComponent } from './signout/signout.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +35,8 @@ import {JwtClientService} from "./services/jwt-client.service";
     LoginComponent,
     SignupComponent,
     QuestionComponent,
-    PostDetailsComponent
+    PostDetailsComponent,
+    SignoutComponent
   ],
   imports: [
     HttpClientModule,
@@ -44,7 +47,7 @@ import {JwtClientService} from "./services/jwt-client.service";
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [JwtClientService],
+  providers: [JwtClientService, CookieService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

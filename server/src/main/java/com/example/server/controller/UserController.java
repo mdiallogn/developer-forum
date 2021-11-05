@@ -27,7 +27,7 @@ public class UserController {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    @PostMapping("/add")
+    @PostMapping()
     public ResponseEntity<User> add(@RequestBody UserEntity user) throws JsonProcessingException {
         return new ResponseEntity<>(userService.add(user), HttpStatus.CREATED);
     }
@@ -61,7 +61,7 @@ public class UserController {
         return new ResponseEntity<>("Deleted successfully !", HttpStatus.OK);
     }
 
-    @GetMapping("/all")
+    @GetMapping()
     public ResponseEntity<List<User>> getAll() {
         return new ResponseEntity<>(userService.findAll(), HttpStatus.OK);
     }
