@@ -42,14 +42,14 @@ public class ServerApplication {
 		repository.deleteAll();
 	}
 
-	@Bean
-	public WebMvcConfigurer corsConfigurer(){
-		return new WebMvcConfigurer() {
-			@Override
-			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/*").allowedHeaders("*").allowedOrigins("*").allowedMethods("*")
-						.allowCredentials(true);
-			}
-		};
-	}
+//	@Bean
+//	public WebMvcConfigurer corsConfigurer(){
+//		return new WebMvcConfigurer() {
+//			@Override
+//			public void addCorsMappings(CorsRegistry registry) {
+//				registry.addMapping("/*").allowedHeaders("*").allowedOrigins("*").allowedMethods("*")
+//						.allowCredentials(true);
+//			}
+//		};
+//	}
 }

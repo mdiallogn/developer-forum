@@ -41,7 +41,7 @@ public class UserController {
         } catch (Exception ex) {
             throw new Exception("invalid username/password");
         }
-        System.out.println("Token generated:: "+jwtUtil.generateToken(authRequest.getUserName()));
+        System.out.println("Token generated:: " + jwtUtil.generateToken(authRequest.getUserName()));
         return jwtUtil.generateToken(authRequest.getUserName());
     }
 

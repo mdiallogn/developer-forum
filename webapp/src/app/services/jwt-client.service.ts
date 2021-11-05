@@ -7,14 +7,14 @@ import {Observable} from "rxjs";
 })
 export class JwtClientService {
 
-  baseUrl: string = "http://localhost:8000/api/users";
+  baseUrl: string = "http://127.0.0.1:8000/api/users";
 
   constructor(private http: HttpClient) {
   }
 
   // @ts-ignore
-  public generateToken(request: any) {
-    this.http.post<string>(this.baseUrl + "/login", request, {responseType: 'text' as 'json'});
+  public generateToken(request: any):Observable<string> {
+    this.http.post<Observable<string>>(this.baseUrl + "/login", request);
   }
 
   public welcome(token: string) {

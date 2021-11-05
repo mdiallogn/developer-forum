@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { UserComponent } from './components/user/user.component';
 import { PostComponent } from './components/post/post.component';
 import { CommentComponent } from './components/comment/comment.component';
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { HomeComponent } from './home/home.component';
 import { NotfoundComponent } from './notfound/notfound.component';
 import { MessagetestComponent } from './messagetest/messagetest.component';
@@ -18,6 +18,7 @@ import { PostDetailsComponent } from './post-details/post-details.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr';
+import {JwtClientService} from "./services/jwt-client.service";
 
 @NgModule({
   declarations: [
@@ -41,8 +42,9 @@ import { ToastrModule } from 'ngx-toastr';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    ReactiveFormsModule
   ],
-  providers: [],
+  providers: [JwtClientService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

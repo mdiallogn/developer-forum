@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {JwtClientService} from "../services/jwt-client.service";
-import {Observable} from "rxjs";
+import {FormBuilder, Validators} from "@angular/forms";
+import {HttpClient} from "@angular/common/http";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-login',
@@ -9,26 +11,45 @@ import {Observable} from "rxjs";
 })
 export class LoginComponent implements OnInit {
 
+  loginForm: any;
   token: string = "";
-  authRequest: any = {
-    "userName": "kasmi",
-    "password": "kasmi1997"
-  };
-
-  constructor(private jwtClientService: JwtClientService) {
+  baseUrl: string = "http://127.0.0.1:8000/api/users";
+  constructor(private jwtClientService: JwtClientService,
+              private fb: FormBuilder,
+              private http: HttpClient,
+              private router: Router) {
   }
 
   ngOnInit(): void {
-    this.getAccessToken(this.authRequest);
+    this.loginForm = this.fb.group({
+      username: ['', Validators.required],
+      password: ['', Validators.required]
+    });
   }
 
-  public getAccessToken(authRequest: any) {
-    const response$ = this.jwtClientService.generateToken(authRequest);
-    // @ts-ignore
-    response$.subscribe(data => {
-      console.log("Token " + data);
-      this.token = data;
-    });
+  public login() {
+    const authRequest = {
+      userName: this.loginForm.value["username"],
+      password: this.loginForm.value["password"]
+    };
+    // const response$ = this.jwtClientService.generateToken(authRequest);
+    this.http.post(this.baseUrl + "/login", authRequest, {responseType: "text" as 'json'})
+      .subscribe(
+        data => {
+          console.warn("Token " + data);
+          this.router.navigate(["/"]);
+          // this.token = data;
+        },
+        error => console.log("There is an error occurred: " + error)
+      );
+  }
+
+  get username() {
+    return this.loginForm.get('username');
+  }
+
+  get password() {
+    return this.loginForm.get('password');
   }
 
 }
