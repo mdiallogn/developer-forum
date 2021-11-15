@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -41,7 +43,7 @@ public class UserController {
         } catch (Exception ex) {
             throw new Exception("invalid username/password");
         }
-        System.out.println("Token generated:: " + jwtUtil.generateToken(authRequest.getUserName()));
+//        System.out.println("Token generated:: " + jwtUtil.generateToken(authRequest.getUserName()));
         return jwtUtil.generateToken(authRequest.getUserName());
     }
 
@@ -62,7 +64,10 @@ public class UserController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<User>> getAll() {
+    public ResponseEntity<List<User>> getAll() {//Authentication authentication
+//        UserDetails userDetails=(UserDetails) authentication.getDetails();
+//        System.out.println("Authenticated user is:: "+userDetails.getUsername());
+//        System.out.println(authentication.getDetails());
         return new ResponseEntity<>(userService.findAll(), HttpStatus.OK);
     }
 

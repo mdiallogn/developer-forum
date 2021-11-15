@@ -3,6 +3,8 @@ import {JwtClientService} from "../services/jwt-client.service";
 import {FormBuilder, Validators} from "@angular/forms";
 import {HttpClient} from "@angular/common/http";
 import {Router} from "@angular/router";
+import {Global} from "../global-classes/global";
+import {catchError} from "rxjs/operators";
 
 @Component({
   selector: 'app-login',
@@ -12,7 +14,7 @@ import {Router} from "@angular/router";
 export class LoginComponent implements OnInit {
 
   loginForm: any;
-  token: string = "";
+  // token: string = "";
   baseUrl: string = "http://127.0.0.1:8000/api/users";
   constructor(private jwtClientService: JwtClientService,
               private fb: FormBuilder,
@@ -37,9 +39,10 @@ export class LoginComponent implements OnInit {
       .subscribe(
         data => {
           console.warn("Token " + data);
-          this.router.navigate(["/"]);
-          // this.token = data;
+          Global.TOKEN = data;
+          this.router.navigate(["/home"]);
         },
+        // catchError()
         error => console.log("There is an error occurred: " + error)
       );
   }
