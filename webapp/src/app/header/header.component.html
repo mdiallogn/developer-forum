@@ -12,8 +12,9 @@
                 <ul class="nav navbar-nav navbar-right">
                     <li><a routerLink="/home" routerLinkActive="active">Home</a></li>
                     <li><a routerLink="/test" routerLinkActive="active">Test socket</a></li>
-                    <li><a routerLink="/login" routerLinkActive="active">Se connecter</a></li>
-                    <li><a routerLink="/signup" routerLinkActive="active">Créer un compte</a></li>
+                    <li *ngIf="!isAuth"><a routerLink="/login" routerLinkActive="active">Se connecter</a></li>
+                    <li *ngIf="!isAuth"><a routerLink="/signup" routerLinkActive="active">Créer un compte</a></li>
+                    <li (click)="logout()" *ngIf="isAuth"><a routerLinkActive="active">Se déconnecter</a></li>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->

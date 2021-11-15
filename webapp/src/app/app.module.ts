@@ -16,10 +16,11 @@ import { SignupComponent } from './signup/signup.component';
 import { QuestionComponent } from './question/question.component';
 import { PostDetailsComponent } from './post-details/post-details.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr';
 import {JwtClientService} from "./services/jwt-client.service";
-import {AuthInterceptor} from "./services/auth-interceptor.service";
+import { CookieService } from 'ngx-cookie-service';
+import { SignoutComponent } from './signout/signout.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import {AuthInterceptor} from "./services/auth-interceptor.service";
     LoginComponent,
     SignupComponent,
     QuestionComponent,
-    PostDetailsComponent
+    PostDetailsComponent,
+    SignoutComponent
   ],
   imports: [
     HttpClientModule,
@@ -45,9 +47,7 @@ import {AuthInterceptor} from "./services/auth-interceptor.service";
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [JwtClientService,
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
-  ],
+  providers: [JwtClientService, CookieService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
