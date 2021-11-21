@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder} from "@angular/forms";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Router} from "@angular/router";
 import {Global} from "../global-classes/global";
 
@@ -19,8 +19,23 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log("token retrieved is:: "+Global.TOKEN);
-    this.http.get(this.baseUrl + "/all").subscribe(
+    console.log("token retrieved is:: " + Global.TOKEN);
+    const headers: HttpHeaders = new HttpHeaders();
+    // headers.set('Authorization', 'Bearer ' + Global.TOKEN);
+
+    // const httpOptions = {
+    //   headers: new HttpHeaders({
+    //     Authorization: 'Bearer ' + Global.TOKEN
+    //   })
+    // };
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        // Authorization: 'Bearer ' + Global.TOKEN
+      })
+    };
+
+    this.http.get(this.baseUrl + "/all").subscribe(// httpOptions
       (data: any) => {
         console.log("list of users:: " + data[0].firstName + " " + data[0].lastName);
       },

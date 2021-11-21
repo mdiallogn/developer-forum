@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable, of} from "rxjs";
-import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from "@angular/common/http";
+import {HttpEvent, HttpHandler, HttpHeaders, HttpInterceptor, HttpRequest} from "@angular/common/http";
 import {Global} from "../global-classes/global";
 
-@Injectable({providedIn: 'root'})
+@Injectable()
 export class AuthInterceptor implements HttpInterceptor {
   private AUTH_HEADER = 'Authorization';
   private token = Global.TOKEN;
@@ -12,17 +12,12 @@ export class AuthInterceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-    if (!req.headers.has('Content-Type')) {
+    //set authorization for path /users/all
+    if (req.url.includes("/users/all")){
       req = req.clone({
-        headers: req.headers.set('Content-Type', 'application/json')
+        headers: new HttpHeaders({Authorization: 'Bearer ' + Global.TOKEN})
       });
     }
-
-    req = req.clone({
-      headers: req.headers.set('Access-Control-Allow-Origin', 'http://127.0.0.1:8000')
-    });
-
-    req = this.addAuthenticationToken(req);
     return next.handle(req);
     // return next.handle(req).pipe(
     //   catchError((error: HttpErrorResponse) => {
@@ -68,7 +63,7 @@ export class AuthInterceptor implements HttpInterceptor {
       return request;
     }
     return request.clone({
-      headers: request.headers.set(this.AUTH_HEADER, 'Bearer ' + this.token)
+      headers: request.headers.append('Authorization', 'Bearer ' + this.token)//this.AUTH_HEADER
     });
   }
 }

@@ -61,8 +61,9 @@ public class UserController {
         return new ResponseEntity<>("Deleted successfully !", HttpStatus.OK);
     }
 
-    @GetMapping()
-    public ResponseEntity<List<User>> getAll() {
+    @GetMapping("/all")
+    public ResponseEntity<List<User>> getAllUsers() {
+        System.out.println("get all users method is called...");
         return new ResponseEntity<>(userService.findAll(), HttpStatus.OK);
     }
 

@@ -2,8 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {JwtClientService} from "../services/jwt-client.service";
 import {FormBuilder, Validators} from "@angular/forms";
 import {HttpClient} from "@angular/common/http";
-import { ToastrService } from 'ngx-toastr';
+import {ToastrService} from 'ngx-toastr';
 import {Router} from "@angular/router";
+import {Global} from "../global-classes/global";
 
 @Component({
   selector: 'app-login',
@@ -14,6 +15,7 @@ export class LoginComponent implements OnInit {
   loginForm: any;
   token: string = "";
   baseUrl: string = "http://127.0.0.1:8000/api/users";
+
   constructor(private jwtClientService: JwtClientService,
               private fb: FormBuilder,
               private http: HttpClient,
@@ -43,6 +45,7 @@ export class LoginComponent implements OnInit {
       .subscribe(
         data => {
           console.warn("Token " + data);
+          Global.TOKEN = data;
           this.router.navigate(["/"]);
           this.jwtClientService.connect(data.toString())
           this.toastr.success("Bon retour parmis nous " + authRequest.userName + " !")
