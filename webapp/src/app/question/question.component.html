@@ -9,12 +9,10 @@
         <div class="col-md-9">
             <div class="right-description893">
                 <div id="que-hedder2983">
-                    <h3><a [routerLink]="['/posts', 1]">Why Do You Want to Work at This Company?</a></h3>
+                    <h3><a [routerLink]="['/posts', post.id]">{{ post.subject }}</a></h3>
                 </div>
                 <div class="ques-details10018">
-                    <p>Duis dapibus aliquam mi, eget euismod sem scelerisque ut. Vivamus at elit quis urna adipiscing
-                        iaculis.Duis dapibus aliquam mi, eget euismod sem scelerisque ut. Vivamus at elit quis urna
-                        adipiscing iaculis.</p>
+                    <p class="mb">{{ post.content }} </p>
                 </div>
                 <hr>
                 <div class="ques-icon-info3293"> <a href="#"><i class="fa fa-star" aria-hidden="true"> 5 </i> </a> <a

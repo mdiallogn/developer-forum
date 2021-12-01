@@ -1,8 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder} from "@angular/forms";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Router} from "@angular/router";
-import {Global} from "../global-classes/global";
+import { Post } from '../model/post';
 
 @Component({
   selector: 'app-home',
@@ -11,7 +11,8 @@ import {Global} from "../global-classes/global";
 })
 export class HomeComponent implements OnInit {
 
-  baseUrl: string = "http://127.0.0.1:8000/api/v1/users";
+  posts:Post[] = []
+  baseUrl: string = "http://127.0.0.1:8000/api/v1/posts";
 
   constructor(private fb: FormBuilder,
               private http: HttpClient,
@@ -19,25 +20,10 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log("token retrieved is:: " + Global.TOKEN);
-    const headers: HttpHeaders = new HttpHeaders();
-    // headers.set('Authorization', 'Bearer ' + Global.TOKEN);
-
-    // const httpOptions = {
-    //   headers: new HttpHeaders({
-    //     Authorization: 'Bearer ' + Global.TOKEN
-    //   })
-    // };
-
-    const httpOptions = {
-      headers: new HttpHeaders({
-        // Authorization: 'Bearer ' + Global.TOKEN
-      })
-    };
-
-    this.http.get(this.baseUrl).subscribe(// httpOptions
-      (data: any) => {
-        console.log("list of users:: " + data[0].firstName + " " + data[0].lastName);
+    this.http.get<Post[]>(this.baseUrl).subscribe(// httpOptions
+      data => {
+        this.posts = data
+        console.log("list of post:: ", this.posts);
       },
       error => console.log("Error occurred in requesting...")
     );
