@@ -34,7 +34,6 @@ public class PostController {
     @PostMapping("/{userid}")
 
     public ResponseEntity<Post> add(@RequestBody PostEntity post, @PathVariable String userid) {
-
         User author = userService.getById(userid);
         Post newPost = new PostEntity(post.getSubject(), post.getContent());
         newPost.setAuthor(author);
@@ -75,7 +74,7 @@ public class PostController {
         return new ResponseEntity<>("Post repository is empty", HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping("/all")
+    @GetMapping()
     public ResponseEntity<List<Post>> getAll() {
         return new ResponseEntity<>(postService.findAll(), HttpStatus.OK);
     }
