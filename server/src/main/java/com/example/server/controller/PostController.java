@@ -31,16 +31,12 @@ public class PostController {
     private final UserService userService;
     private final ObjectMapper mapper = new ObjectMapper();
 
-    @PostMapping("/add/{userid}")
+    @PostMapping("/{userid}")
 
-    public ResponseEntity<Post> add(@RequestBody JsonNode jsonNode, @PathVariable String userid) {
+    public ResponseEntity<Post> add(@RequestBody PostEntity post, @PathVariable String userid) {
 
         User author = userService.getById(userid);
-        Post post = mapper.convertValue(jsonNode, PostEntity.class);
         post.setAuthor(author);
-        post.setDate(DateGenerator.generateDate());
-        post.setComments(new ArrayList<>());
-
         postService.add(post);
 
         return new ResponseEntity<>(post, HttpStatus.CREATED);

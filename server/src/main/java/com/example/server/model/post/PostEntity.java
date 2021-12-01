@@ -7,6 +7,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -36,7 +38,7 @@ public class PostEntity implements Post{
         this.subject = subject;
         this.content = content;
         this.author = null;
-        this.date = null;
+        this.date = Timestamp.valueOf(LocalDateTime.now()).toString();
         this.comments = new ArrayList<>();
     }
 

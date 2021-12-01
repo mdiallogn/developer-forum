@@ -49,6 +49,11 @@ export class LoginComponent implements OnInit {
           this.router.navigate(["/"]);
           this.jwtClientService.connect(data.toString())
           this.toastr.success("Bon retour parmis nous " + authRequest.userName + " !")
+          this.http.get<Array<Object>>(this.baseUrl + '?username=' + authRequest.userName).subscribe(data => {
+            if (data.length > 0) {
+              JwtClientService.userInfo = data[0];
+            }
+          })
         },
         error => {
           console.log("There is an error occurred: " + error)

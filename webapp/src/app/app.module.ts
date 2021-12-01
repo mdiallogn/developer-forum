@@ -22,6 +22,7 @@ import {JwtClientService} from "./services/jwt-client.service";
 import {CookieService} from 'ngx-cookie-service';
 import {SignoutComponent} from './signout/signout.component';
 import {httpInterceptorProviders} from "./services";
+import { CreatePostComponent } from './create-post/create-post.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import {httpInterceptorProviders} from "./services";
     SignupComponent,
     QuestionComponent,
     PostDetailsComponent,
-    SignoutComponent
+    SignoutComponent,
+    CreatePostComponent
   ],
   imports: [
     HttpClientModule,

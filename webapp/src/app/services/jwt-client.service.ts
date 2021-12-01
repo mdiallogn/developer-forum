@@ -12,6 +12,7 @@ export class JwtClientService {
   public static isAuth: boolean = false;
   public static currentToken : string = "";
   baseUrl: string = "http://127.0.0.1:8000/api/v1/users";
+  public static userInfo = {}
 
   constructor(private http: HttpClient,
               private cookie: CookieService) {

@@ -59,6 +59,11 @@ public class UserServiceImplement implements UserService{
 
     @Override
     public UserEntity getByUsername(String username) {
-        return repository.findByUserName(username);
+        var list= repository.findByUserName(username);
+        UserEntity user = null;
+        if (list.size() > 0) {
+            user = list.get(0);
+        }
+        return user;
     }
 }
