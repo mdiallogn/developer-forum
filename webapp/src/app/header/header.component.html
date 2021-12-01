@@ -14,7 +14,7 @@
                     <li><a routerLink="/test" routerLinkActive="active">Test socket</a></li>
                     <li *ngIf="!isAuth"><a routerLink="/login" routerLinkActive="active">Se connecter</a></li>
                     <li *ngIf="!isAuth"><a routerLink="/signup" routerLinkActive="active">Créer un compte</a></li>
-                    <li *ngIf="isAuth"><a routerLink="/post/create" routerLinkActive="active">Poser une question</a></li>
+                    <li *ngIf="isAuth"><a routerLink="/posts/create" routerLinkActive="active">Poser une question</a></li>
                     <li (click)="logout()" *ngIf="isAuth"><a routerLinkActive="active">Se déconnecter</a></li>
                 </ul>
             </div>

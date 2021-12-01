@@ -43,18 +43,32 @@ export class JwtClientService {
     return this.http.get(this.baseUrl , {headers, responseType: "text" as 'json'});
   }
 
-  public connect(userToken: string) {
+  public connect(userToken: string, userInfo: User) {
     this.cookie.set('isAuth', 'true');
     this.cookie.set('currentToken', userToken);
     this.cookie.set('expiration', (Date.now() + 1000*60*10)+'');
+    this.cookie.set('userinfo', JSON.stringify(userInfo))
     JwtClientService.isAuth = true;
     JwtClientService.currentToken = userToken;
   }
+
+  public getUserInfo() {
+    return JSON.parse(this.cookie.get('userinfo'))
+  }
+
+  public isAuth() {
+    if (!this.cookie.check('isAuth')) {
+      return false;
+    }
+    return this.cookie.get('isAuth') === 'true'
+  }
+
 
   public disconnect() {
     this.cookie.delete('isAuth')
     this.cookie.delete('currentToken')
     this.cookie.delete('expiration')
+    this.cookie.delete('userinfo')
     JwtClientService.isAuth = false;
     JwtClientService.currentToken = "";
   }

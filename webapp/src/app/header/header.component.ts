@@ -13,7 +13,8 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit(): void {
     this.jwtService.refresh();
-    this.isAuth = JwtClientService.isAuth;
+    this.isAuth = this.jwtService.isAuth();
+    console.log('the header => ', this.isAuth)
   }
 
   logout() {

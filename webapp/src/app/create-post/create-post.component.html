@@ -11,10 +11,10 @@
                             <div class="form-group">
                                 <p>Titre*</p>
                                 <input type="text"
-                                        class="form-control name-box24894 input238-design"
+                                        class="form-control"
                                         placeholder="Titre"
                                         name="subject"
-                                        ngModel #subject="ngModel">
+                                        ngModel #subject="ngModel" required minlength="10">
                             </div>
                         </div>
                         <div class="col-12">
@@ -22,14 +22,14 @@
                                 <textarea
                                     class="form-control"
                                     name="content"
-                                    id="content"
+                                    placeholder="Faites une description détailler de votre question"
                                     cols="30"
                                     rows="10"
-                                    ngModel #content="ngModel">
+                                    ngModel #content="ngModel" required minlength="30">
                                 </textarea>
                             </div>
-                            <button type="button" class="pos393-submit">Publier</button>
                         </div>
+                        <button type="submit" class="pos393-submit">Publier</button>
                     </form>
 
                 </div>

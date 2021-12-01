@@ -71,7 +71,6 @@ public class UserController {
     @GetMapping()
     public ResponseEntity<List<User>> getAllUsers(@RequestParam @Nullable String username) {
         if (username != null && !username.isEmpty()) {
-            System.out.println("i'm inside");
             var user = userService.getByUsername(username);
             List<User> users = new ArrayList<>();
             if (user != null) {

@@ -36,10 +36,11 @@ public class PostController {
     public ResponseEntity<Post> add(@RequestBody PostEntity post, @PathVariable String userid) {
 
         User author = userService.getById(userid);
-        post.setAuthor(author);
-        postService.add(post);
-
-        return new ResponseEntity<>(post, HttpStatus.CREATED);
+        Post newPost = new PostEntity(post.getSubject(), post.getContent());
+        newPost.setAuthor(author);
+        newPost.setContent(post.getContent());
+        postService.add(newPost);
+        return new ResponseEntity<>(newPost, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")

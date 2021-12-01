@@ -3,6 +3,7 @@ import { ToastrService } from 'ngx-toastr';
 import { NgForm } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { JwtClientService } from '../services/jwt-client.service';
 
 @Component({
   selector: 'app-create-post',
@@ -11,33 +12,30 @@ import { Router } from '@angular/router';
 })
 export class CreatePostComponent implements OnInit {
 
-  constructor(private toastr: ToastrService, private http: HttpClient, private router: Router) { }
+  constructor(private toastr: ToastrService,
+              private http: HttpClient,
+              private router: Router,
+              private jwtClientService: JwtClientService) { }
 
   ngOnInit(): void {
   }
-  submit(e:NgForm) {
-    if (e.form.status === "VALID") {
-      if (e.value.password !==  e.value.rePassword) {
-       this.toastr.error("Mot de passe différent");
-      } else {
-        const data = {
-          firstName: e.value.firstName,
-          lastName: e.value.lastName,
-          userName: e.value.pseudo,
-          password: e.value.password,
-          role: 'USER'
-        };
-        //submit data
-        this.http.post("http://127.0.0.1:8000/api/v1/users", data).subscribe(response => {
-          this.toastr.success("Compte crée avec succès");
-          setTimeout(()=>{}, 2000);
-          this.router.navigate(['/login'])
-        },
-        error => {
-          this.toastr.error("Ce nom d'utilisateur n'est pas disponible.");
-        })
-      }
 
+  submit(e:NgForm) {
+    console.log('form validated', e)
+    if (e.form.status === "VALID") {
+      const data = {
+        subject: e.value.subject,
+        content: e.value.content
+      };
+      //submit data
+      this.http.post("http://127.0.0.1:8000/api/v1/posts/"
+        + this.jwtClientService.getUserInfo().id, data).subscribe(response => {
+        this.toastr.success("Votre crée et mis en ligne avec succès");
+        this.router.navigate(['/home'])
+      },
+      error => {
+        this.toastr.error("Ce nom d'utilisateur n'est pas disponible.");
+      })
     } else {
       this.toastr.error("Veuillez remplir correctement tous les champs", "Valeurs manquantes ou invalides", {timeOut: 5000});
     }
