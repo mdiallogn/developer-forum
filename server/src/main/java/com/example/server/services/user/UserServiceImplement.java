@@ -56,4 +56,9 @@ public class UserServiceImplement implements UserService{
             repository.deleteAll();
         }
     }
+
+    @Override
+    public UserEntity getByUsername(String username) {
+        return repository.findByUserName(username);
+    }
 }

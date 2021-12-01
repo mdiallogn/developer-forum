@@ -48,13 +48,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //        http.cors().disable();
         http.cors().and().csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/api/admin/**").hasRole(Const.ADMIN)
-                .antMatchers("/api/home").permitAll()
-                .antMatchers("/api/users/add").permitAll()
-                .antMatchers("/api/users/login").permitAll()
-                .antMatchers("/api/post/**").authenticated()
-                .antMatchers("/api/comment/**").authenticated()
-                .antMatchers("/api/users/all").authenticated()
+                .antMatchers("/api/v1/admin/**").hasRole(Const.ADMIN)
+                .antMatchers("/api/v1/home").permitAll()
+                .antMatchers("/api/v1/users/add").permitAll()
+                .antMatchers("/api/v1/users/login").permitAll()
+                .antMatchers("/api/v1/post/**").authenticated()
+                .antMatchers("/api/v1/comment/**").authenticated()
+                .antMatchers("/api/v1/users/all").authenticated()
                 .and().exceptionHandling().and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);

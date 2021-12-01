@@ -11,7 +11,7 @@ export class JwtClientService {
 
   public static isAuth: boolean = false;
   public static currentToken : string = "";
-  baseUrl: string = "http://127.0.0.1:8000/api/users";
+  baseUrl: string = "http://127.0.0.1:8000/api/v1/users";
 
   constructor(private http: HttpClient,
               private cookie: CookieService) {
@@ -38,7 +38,7 @@ export class JwtClientService {
     // get list of users when user is authenticated...
     const headers = new HttpHeaders();
     headers.set('Authorization', tokenStr);
-    return this.http.get(this.baseUrl + "/all", {headers, responseType: "text" as 'json'});
+    return this.http.get(this.baseUrl , {headers, responseType: "text" as 'json'});
   }
 
   public connect(userToken: string) {

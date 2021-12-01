@@ -28,10 +28,13 @@ export class SignupComponent implements OnInit {
           role: 'USER'
         };
         //submit data
-        this.http.post("http://127.0.0.1:8000/api/users", data).subscribe(response => {
+        this.http.post("http://127.0.0.1:8000/api/v1/users", data).subscribe(response => {
           this.toastr.success("Compte crée avec succès");
           setTimeout(()=>{}, 2000);
           this.router.navigate(['/login'])
+        },
+        error => {
+          this.toastr.error("Ce nom d'utilisateur n'est pas disponible.");
         })
       }
 

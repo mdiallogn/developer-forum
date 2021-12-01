@@ -14,7 +14,7 @@ import {Global} from "../global-classes/global";
 export class LoginComponent implements OnInit {
   loginForm: any;
   token: string = "";
-  baseUrl: string = "http://127.0.0.1:8000/api/users";
+  baseUrl: string = "http://127.0.0.1:8000/api/v1/users";
 
   constructor(private jwtClientService: JwtClientService,
               private fb: FormBuilder,
