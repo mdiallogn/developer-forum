@@ -23,4 +23,13 @@ public interface Post {
     void addComment(Comment commentEntity);
     void deleteComment(Comment commentEntity);
     void setDate(String date);
+
+    int getUpVote();
+    void setUpVote(int value);
+    int getDownVote();
+    void setDownVote(int value);
+    int increaseUpVote();
+    int decreaseUpVote();
+    int increaseDownVote();
+    int decreaseDownVote();
 }

@@ -33,6 +33,10 @@ public class PostEntity implements Post{
     private String date;
     @Field("comments")
     private List<Comment> comments;
+    @Field("upVote")
+    private int upVote;
+    @Field("downVote")
+    private int downVote;
 
     public PostEntity(String subject, String content) {
         this.subject = subject;
@@ -40,6 +44,8 @@ public class PostEntity implements Post{
         this.author = null;
         this.date = Timestamp.valueOf(LocalDateTime.now()).toString();
         this.comments = new ArrayList<>();
+        upVote = 0;
+        downVote = 0;
     }
 
     @Override
@@ -108,6 +114,36 @@ public class PostEntity implements Post{
     }
 
     @Override
+    public void setUpVote(int value) {
+        upVote = value;
+    }
+
+    @Override
+    public void setDownVote(int value) {
+        downVote = value;
+    }
+
+    @Override
+    public int increaseUpVote() {
+        return ++upVote;
+    }
+
+    @Override
+    public int decreaseUpVote() {
+        return --upVote;
+    }
+
+    @Override
+    public int increaseDownVote() {
+        return ++downVote;
+    }
+
+    @Override
+    public int decreaseDownVote() {
+        return --downVote;
+    }
+
+    @Override
     public String toString() {
         return "Post{" +
                 "id='" + id + '\'' +
@@ -115,6 +151,8 @@ public class PostEntity implements Post{
                 ", content='" + content + '\'' +
                 ", author=" + author +
                 ", comments=" + comments +
+                ", upVote=" + upVote +
+                "downVote=" + downVote +
                 '}';
     }
 
