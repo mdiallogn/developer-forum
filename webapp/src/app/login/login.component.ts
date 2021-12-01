@@ -5,6 +5,7 @@ import {HttpClient} from "@angular/common/http";
 import {ToastrService} from 'ngx-toastr';
 import {Router} from "@angular/router";
 import {Global} from "../global-classes/global";
+import { User } from '../model/user'
 
 @Component({
   selector: 'app-login',
@@ -49,7 +50,7 @@ export class LoginComponent implements OnInit {
           this.router.navigate(["/"]);
           this.jwtClientService.connect(data.toString())
           this.toastr.success("Bon retour parmis nous " + authRequest.userName + " !")
-          this.http.get<Array<Object>>(this.baseUrl + '?username=' + authRequest.userName).subscribe(data => {
+          this.http.get<Array<User>>(this.baseUrl + '?username=' + authRequest.userName).subscribe(data => {
             if (data.length > 0) {
               JwtClientService.userInfo = data[0];
             }

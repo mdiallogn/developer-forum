@@ -3,6 +3,7 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
 import { CookieService } from 'ngx-cookie-service';
 import { Router } from '@angular/router';
+import { User } from '../model/user' 
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class JwtClientService {
   public static isAuth: boolean = false;
   public static currentToken : string = "";
   baseUrl: string = "http://127.0.0.1:8000/api/v1/users";
-  public static userInfo = {}
+  public static userInfo:User
 
   constructor(private http: HttpClient,
               private cookie: CookieService) {
