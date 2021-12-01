@@ -2,11 +2,13 @@
     <div class="row">
         <div class="col-md-1">
             <div class="left-user12923 left-user12923-repeat">
-                <a href="#"><img src="assets/image/images.png" alt="image"> </a> <a href="#"><i class="fa fa-check"
-                        aria-hidden="true"></i></a>
+                <a href="#">
+                    <img src="assets/image/emptyProfil.jpg" alt="Photo de profil">
+                    <b>{{post.author.userName }}</b>
+                </a>
             </div>
         </div>
-        <div class="col-md-9">
+        <div class="col-md-11">
             <div class="right-description893">
                 <div id="que-hedder2983">
                     <h3><a [routerLink]="['/posts', post.id]">{{ post.subject }}</a></h3>
@@ -15,23 +17,14 @@
                     <p class="mb">{{ post.content }} </p>
                 </div>
                 <hr>
-                <div class="ques-icon-info3293"> <a href="#"><i class="fa fa-star" aria-hidden="true"> 5 </i> </a> <a
-                        href="#"><i class="fa fa-folder" aria-hidden="true"> wordpress</i></a> <a href="#"><i
-                            class="fa fa-clock-o" aria-hidden="true"> 4 min ago</i></a> <a href="#"><i
-                            class="fa fa-question-circle-o" aria-hidden="true"> Question</i></a> <a href="#"><i
-                            class="fa fa-bug" aria-hidden="true"> Report</i></a> </div>
-            </div>
-        </div>
-        <div class="col-md-2">
-            <div class="ques-type302">
-                <a href="#">
-                    <button type="button" class="q-type238"><i class="fa fa-comment" aria-hidden="true"> 333335
-                            answer</i></button>
-                </a>
-                <a href="#">
-                    <button type="button" class="q-type23 button-ques2973"> <i class="fa fa-user-circle-o"
-                            aria-hidden="true"> 70 view</i> </button>
-                </a>
+                <div class="ques-icon-info3293">
+                    <a href="#"><i class="fa fa-thumbs-up" aria-hidden="true">{{ post.upVote }}</i> </a>
+                    <a href="#"><i class="fa fa-thumbs-down" aria-hidden="true">{{ post.downVote }}</i> </a>
+                    <a href="#"><i class="fa fa-folder" aria-hidden="true"> wordpress</i></a>
+                    <a href="#"><i class="fa fa-clock-o" aria-hidden="true"> {{post.date | date: 'short'}}</i></a>
+                    <a href="#"><i class="fa fa-comment" aria-hidden="true"> {{post.comments | commentCount}}</i></a>
+                    <a href="#"><i class="fa fa-user" aria-hidden="true">{{post.author.userName }}</i></a>
+                </div>
             </div>
         </div>
     </div>
