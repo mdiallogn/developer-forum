@@ -1,11 +1,15 @@
 package com.example.server.model.comment;
 
 import com.example.server.model.user.User;
+import com.example.server.model.user.UserEntity;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -22,8 +26,10 @@ public class CommentEntity implements Comment{
     private String id;
     @Field("message")
     private String message;
+
+    @JsonSubTypes({@JsonSubTypes.Type(value = UserEntity.class)})
     @Field("author")
-    private User author;
+    private UserEntity author;
     @Field("date")
     private String date;
     @Field("reply")
@@ -33,6 +39,7 @@ public class CommentEntity implements Comment{
         this.message = message;
         this.author = null;
         this.reply = new ArrayList<>();
+        this.date = Timestamp.valueOf(LocalDateTime.now()).toString();
     }
 
     @Override
@@ -46,7 +53,7 @@ public class CommentEntity implements Comment{
     }
 
     @Override
-    public User getAuthor() {
+    public UserEntity getAuthor() {
         return author;
     }
 
@@ -71,7 +78,7 @@ public class CommentEntity implements Comment{
     }
 
     @Override
-    public void setAuthor(User author) {
+    public void setAuthor(UserEntity author) {
         this.author = author;
     }
 

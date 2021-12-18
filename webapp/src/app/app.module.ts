@@ -23,7 +23,8 @@ import {CookieService} from 'ngx-cookie-service';
 import {SignoutComponent} from './signout/signout.component';
 import {httpInterceptorProviders} from "./services";
 import { CreatePostComponent } from './create-post/create-post.component';
-import { CommentCountPipe } from './pipe/commentCount'
+import { CommentCountPipe } from './pipe/commentCount';
+import { CreateCommentComponent } from './create-comment/create-comment.component'
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { CommentCountPipe } from './pipe/commentCount'
     PostDetailsComponent,
     SignoutComponent,
     CreatePostComponent,
-    CommentCountPipe
+    CommentCountPipe,
+    CreateCommentComponent
   ],
   imports: [
     HttpClientModule,

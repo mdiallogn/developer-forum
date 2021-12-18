@@ -1,0 +1,11 @@
+<form class="form" #f="ngForm" (ngSubmit)="submit(f)" novalidate>
+    <div class="col-12">
+        <div class="form-group">
+            <input type="text"
+                    class="form-control"
+                    placeholder="Laisser un commentaire. Appuyer sur entrer pour envoyer le commentaire"
+                    name="message"
+                    ngModel #message="ngModel" required minlength="2">
+        </div>
+    </div>
+</form>

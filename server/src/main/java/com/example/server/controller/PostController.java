@@ -1,5 +1,7 @@
 package com.example.server.controller;
 
+import com.example.server.model.comment.Comment;
+import com.example.server.model.comment.CommentEntity;
 import com.example.server.model.post.Post;
 import com.example.server.model.post.PostEntity;
 import com.example.server.model.user.User;
@@ -61,6 +63,21 @@ public class PostController {
     public ResponseEntity<Post> getById(@PathVariable String id) {
         return new ResponseEntity<>(postService.getById(id), HttpStatus.OK);
     }
+
+    @PostMapping("/{id}/comments")
+    public ResponseEntity<Post> comment(@RequestBody CommentEntity comment, @PathVariable String id) {
+        Post post =  postService.getById(id);
+        if (post == null) {
+            throw new IllegalArgumentException("Invalid Post id");
+        }
+        Comment newComment = new CommentEntity();
+        newComment.setAuthor(comment.getAuthor());
+        newComment.setMessage(comment.getMessage());
+        post.addComment(newComment);
+        Post newPost = postService.update(id, post);
+        return new ResponseEntity<>(newPost, HttpStatus.OK);
+    }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteById(@PathVariable String id) {

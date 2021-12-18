@@ -36,7 +36,7 @@ public class CommentController {
     public ResponseEntity<Comment> add(@RequestBody JsonNode jsonNode, @PathVariable String postId,
                                        @PathVariable String userid) throws JsonProcessingException {
 
-        User author = userService.getById(userid);
+        UserEntity author = (UserEntity) userService.getById(userid);
         Post post = postService.getById(postId);
 
         Comment comment = mapper.treeToValue(jsonNode, CommentEntity.class);

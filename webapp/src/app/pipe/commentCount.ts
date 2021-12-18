@@ -6,7 +6,10 @@ export class CommentCountPipe implements PipeTransform {
   transform(value: Comment[]) {
       let count = 0;
       value.forEach(comment => {
-          count += comment.reply.length + 1
+          count += 1
+          if (comment.reply != null) {
+            comment.reply.length
+          }
       });
     return count;
   }

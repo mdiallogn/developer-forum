@@ -1,5 +1,7 @@
 package com.example.server.model.user;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+
 import java.util.Set;
 import java.util.UUID;
 

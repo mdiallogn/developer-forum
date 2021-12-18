@@ -4,6 +4,7 @@ import { NgForm } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { JwtClientService } from '../services/jwt-client.service';
+import API from '../api';
 
 @Component({
   selector: 'app-create-post',
@@ -28,7 +29,7 @@ export class CreatePostComponent implements OnInit {
         content: e.value.content
       };
       //submit data
-      this.http.post("http://127.0.0.1:8000/api/v1/posts/"
+      this.http.post(API.base + '/posts/'
         + this.jwtClientService.getUserInfo().id, data).subscribe(response => {
         this.toastr.success("Votre crée et mis en ligne avec succès");
         this.router.navigate(['/home'])

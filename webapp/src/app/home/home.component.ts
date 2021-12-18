@@ -20,12 +20,11 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.http.get<Post[]>(this.baseUrl).subscribe(// httpOptions
+    this.http.get<Post[]>(this.baseUrl).subscribe(
       data => {
         this.posts = data
-        console.log("list of post:: ", this.posts);
       },
-      error => console.log("Error occurred in requesting...")
+      error => console.log("Error occurred while gettings posts.")
     );
   }
 }

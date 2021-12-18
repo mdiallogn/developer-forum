@@ -9,13 +9,13 @@ public interface Comment {
 
     String getId();
     String getMessage();
-    User getAuthor();
+    UserEntity getAuthor();
     String getDate();
     List<Comment> getReply();
 
     void setDate(String date);
     void setMessage(String message);
-    void setAuthor(User author);
+    void setAuthor(UserEntity author);
     void setReply(List<Comment> comment);
     void addReply(Comment comment);
     void deleteReply(Comment comment);
