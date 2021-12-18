@@ -70,9 +70,8 @@ public class PostController {
         if (post == null) {
             throw new IllegalArgumentException("Invalid Post id");
         }
-        Comment newComment = new CommentEntity();
+        CommentEntity newComment = new CommentEntity(comment.getMessage());
         newComment.setAuthor(comment.getAuthor());
-        newComment.setMessage(comment.getMessage());
         post.addComment(newComment);
         Post newPost = postService.update(id, post);
         return new ResponseEntity<>(newPost, HttpStatus.OK);

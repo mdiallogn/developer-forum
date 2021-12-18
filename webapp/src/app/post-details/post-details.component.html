@@ -19,26 +19,21 @@
                         <div class="row">
                             <div class="comments-container">
                                 <ul id="comments-list" class="comments-list">
-                                    <li>
+                                    <li *ngFor="let comment of post.comments">
                                         <div class="comment-main-level">
                                             <!-- Avatar -->
-                                            <div class="comment-avatar"><img src="assets/image/images.png" alt=""></div>
+                                            <div class="comment-avatar"><img src="assets/image/emptyProfil.jpg" alt=""></div>
                                             <!-- Contenedor del Comentario -->
                                             <div class="comment-box">
                                                 <div class="comment-head">
-                                                    <h6 class="comment-name"><a href="#">Mamadou Saliou DIALLO</a></h6>
+                                                    <h6 class="comment-name"><a href="#"> {{ comment.author.userName}}</a></h6>
                                                     <div>
                                                         <span>
-                                                            <i class="fa fa-clock-o" aria-hidden="true"> January 15 , 2014 at 10:00 pm </i>
+                                                            <i class="fa fa-clock-o" aria-hidden="true">{{comment.date | date: 'short'}}</i>
                                                         </span>
-                                                        <i class="fa fa-reply"></i>
-                                                        <i class="fa fa-heart"></i>
-
                                                     </div>
                                                 </div>
-                                                <div class="comment-content"> Lorem ipsum dolor sit amet, consectetur
-                                                    adipisicing elit. Velit omnis animi et iure laudantium vitae,
-                                                    praesentium optio, sapiente distinctio illo? </div>
+                                                <div class="comment-content">{{ comment.message }}</div>
                                             </div>
                                         </div>
 
@@ -89,24 +84,6 @@
                                                 </div>
                                             </li>
                                         </ul>
-                                    </li>
-                                    <li>
-                                        <div class="comment-main-level">
-                                            <!-- Avatar -->
-                                            <div class="comment-avatar"><img src="assets/image/images.png" alt=""></div>
-                                            <!-- Contenedor del Comentario -->
-                                            <div class="comment-box">
-                                                <div class="comment-head">
-                                                    <h6 class="comment-name"><a href="#">Lorena Rojero</a></h6> <span><i
-                                                            class="fa fa-clock-o" aria-hidden="true"> January 15 , 2014
-                                                            at 10:00 pm</i></span> <i class="fa fa-reply"></i> <i
-                                                        class="fa fa-heart"></i>
-                                                </div>
-                                                <div class="comment-content"> Lorem ipsum dolor sit amet, consectetur
-                                                    adipisicing elit. Velit omnis animi et iure laudantium vitae,
-                                                    praesentium optio, sapiente distinctio illo? </div>
-                                            </div>
-                                        </div>
                                     </li>
 
                                 </ul>
