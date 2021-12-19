@@ -1,8 +1,8 @@
 <form class="form" #f="ngForm" (ngSubmit)="submit(f)" novalidate>
-    <div class="col-12">
+    <div class="col-6">
         <div class="form-group">
             <input type="text"
-                    class="form-control"
+                    class="form-control" style="margin-left: 5px; max-width: 650px;"
                     placeholder="Répondre..."
                     name="message"
                     ngModel #message="ngModel" required minlength="2">

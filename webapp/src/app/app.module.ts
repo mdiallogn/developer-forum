@@ -24,7 +24,8 @@ import {SignoutComponent} from './signout/signout.component';
 import {httpInterceptorProviders} from "./services";
 import { CreatePostComponent } from './create-post/create-post.component';
 import { CommentCountPipe } from './pipe/commentCount';
-import { CreateCommentComponent } from './create-comment/create-comment.component'
+import { CreateCommentComponent } from './create-comment/create-comment.component';
+import { ReplyComponent } from './reply/reply.component'
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { CreateCommentComponent } from './create-comment/create-comment.componen
     SignoutComponent,
     CreatePostComponent,
     CommentCountPipe,
-    CreateCommentComponent
+    CreateCommentComponent,
+    ReplyComponent
   ],
   imports: [
     HttpClientModule,
