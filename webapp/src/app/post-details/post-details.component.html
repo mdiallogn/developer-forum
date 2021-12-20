@@ -13,7 +13,7 @@
         <div class="row">
             <div class="col-md-9">
                 <app-question [post]="post"></app-question>
-                <app-create-comment [post] = "post"></app-create-comment>
+                <app-create-comment [post] = "post" (postUpdate) = "refresh($event)"></app-create-comment>
                 <div class="comment-list12993">
                     <div class="container">
                         <div class="row">
@@ -39,23 +39,21 @@
                                         </div>
 
                                         <ul class="comments-list reply-list">
-                                            <li>
+                                            <li *ngFor="let reply of comment.reply">
                                                 <div class="comment-avatar"><img src="assets/image/images.png" alt=""></div>
                                                 <div class="comment-box">
                                                     <div class="comment-head">
-                                                        <h6 class="comment-name"><a href="#">Lorena Rojero</a></h6>
-                                                        <span><i class="fa fa-clock-o" aria-hidden="true"> January 15 ,
-                                                                2014 at 10:00 pm</i></span> <i class="fa fa-reply"></i>
+                                                        <h6 class="comment-name"><a href="#">{{ reply.author.userName }}</a></h6>
+                                                        <span><i class="fa fa-clock-o" aria-hidden="true">{{ reply.date | date: 'short'}}</i></span> <i class="fa fa-reply"></i>
                                                         <i class="fa fa-heart"></i>
                                                     </div>
-                                                    <div class="comment-content"> Lorem ipsum dolor sit amet,
-                                                        consectetur adipisicing elit. Velit omnis animi et iure
-                                                        laudantium vitae, praesentium optio, sapiente distinctio illo?
+                                                    <div class="comment-content">
+                                                        {{ reply.message }}
                                                     </div>
                                                 </div>
                                             </li>
                                             <li>
-                                                <app-reply [post] = "post" [comment] = "comment"></app-reply>
+                                                <app-reply [post] = "post" [comment] = "comment" (postUpdate) = "refresh($event)"></app-reply>
                                             </li>
                                         </ul>
                                     </li>

@@ -23,4 +23,8 @@ export class PostDetailsComponent implements OnInit {
       })
     })
   }
+
+  refresh(newPost: Post): void {
+    this.post = newPost
+  }
 }

@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output,EventEmitter } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -14,6 +14,8 @@ import { JwtClientService } from '../services/jwt-client.service';
 })
 export class CreateCommentComponent implements OnInit {
   @Input() post: Post = new Post()
+  @Output() postUpdate = new EventEmitter<Post>()
+
   constructor(private toastr: ToastrService,
     private http: HttpClient,
     private router: Router,
@@ -30,8 +32,9 @@ export class CreateCommentComponent implements OnInit {
       author: this.jwtClientService.getUserInfo()
     };
     //submit data
-    this.http.post(API.base + '/posts/' + this.post.id + '/comments', data).subscribe(response => {
+    this.http.post<Post>(API.base + '/posts/' + this.post.id + '/comments', data).subscribe(response => {
       this.toastr.success("Commentaire crée avec succès !");
+      this.postUpdate.emit(response)
       e.reset()
     },
     error => {

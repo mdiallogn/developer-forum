@@ -6,6 +6,7 @@ import com.example.server.model.post.Post;
 import com.example.server.model.post.PostEntity;
 import com.example.server.model.user.User;
 import com.example.server.model.user.UserEntity;
+import com.example.server.services.comment.CommentService;
 import com.example.server.services.post.PostService;
 import com.example.server.services.post.PostServiceImplement;
 import com.example.server.services.user.UserService;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -30,6 +32,7 @@ import java.util.List;
 public class PostController {
 
     private final PostService postService;
+    private final CommentService commentService;
     private final UserService userService;
     private final ObjectMapper mapper = new ObjectMapper();
 
@@ -72,10 +75,37 @@ public class PostController {
         }
         CommentEntity newComment = new CommentEntity(comment.getMessage());
         newComment.setAuthor(comment.getAuthor());
-        post.addComment(newComment);
+        post.addComment(commentService.add(newComment));
         Post newPost = postService.update(id, post);
         return new ResponseEntity<>(newPost, HttpStatus.OK);
     }
+
+    @PostMapping("/{postId}/comments/{commentId}/replies")
+    public ResponseEntity<Post> reply(@RequestBody CommentEntity comment,
+                                      @PathVariable String postId,
+                                      @PathVariable String commentId) {
+        Post post =  postService.getById(postId);
+        if (post == null) {
+            throw new IllegalArgumentException("Invalid Post id");
+        }
+        Optional<Comment> parentComment = post.getComments()
+                                                    .stream()
+                                                    .filter(c -> commentId.equals(c.getId()))
+                                                    .findFirst();
+        if (parentComment.isEmpty()) {
+            throw new IllegalArgumentException("Parent comment not found !");
+        }
+
+        CommentEntity reply = new CommentEntity(comment.getMessage());
+        reply.setAuthor(comment.getAuthor());
+
+        CommentEntity replyTarget = (CommentEntity)parentComment.get();
+        replyTarget.addReply(commentService.add(reply));
+
+        Post newPost = postService.update(postId, post);
+        return new ResponseEntity<>(newPost, HttpStatus.OK);
+    }
+
 
 
     @DeleteMapping("/{id}")
