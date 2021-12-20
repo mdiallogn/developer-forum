@@ -21,7 +21,7 @@
                     <a href="#" (click)="upVote($event)"><i class="fa fa-thumbs-up {{currentUserUpVote ? 'voted': ''}}" aria-hidden="true">{{ post.upVoters?.length }}</i> </a>
                     <a href="#" (click)="downVote($event)"><i class="fa fa-thumbs-down {{currentUserDownVote ? 'voted': ''}}" aria-hidden="true">{{ post.downVoters?.length}}</i> </a>
                     <a href="#"><i class="fa fa-clock-o" aria-hidden="true"> {{post.date | date: 'short'}}</i></a>
-                    <a href="#"><i class="fa fa-comment" aria-hidden="true"> {{post.comments | commentCount}}</i></a>
+                    <a href="/posts/{{ post.id }}"><i class="fa fa-comment" aria-hidden="true"> {{post.comments | commentCount}}</i></a>
                     <a href="#"><i class="fa fa-user" aria-hidden="true">{{post.author.userName }}</i></a>
                 </div>
             </div>
