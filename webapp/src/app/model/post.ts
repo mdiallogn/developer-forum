@@ -8,6 +8,6 @@ export class Post {
     author: User = new User();
     date: string = '';
     comments: Comment[] = [];
-    upVote:number = 0;
-    downVote:number = 0;
+    upVoters:User[] = [];
+    downVoters:User[] = [];
 }

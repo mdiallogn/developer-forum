@@ -2318,7 +2318,7 @@ h5:hover {
     font-family: fontawesome;
 }
 
-.user-description3903 a {
+.user-description3903 a, .voted {
     font-family: fontawesome;
     text-decoration: none;
     color: #FF7361;

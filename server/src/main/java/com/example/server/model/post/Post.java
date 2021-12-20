@@ -1,7 +1,6 @@
 package com.example.server.model.post;
 
 import com.example.server.model.comment.Comment;
-import com.example.server.model.comment.CommentEntity;
 import com.example.server.model.user.User;
 import com.example.server.model.user.UserEntity;
 
@@ -23,13 +22,10 @@ public interface Post {
     void addComment(Comment commentEntity);
     void deleteComment(Comment commentEntity);
     void setDate(String date);
-
-    int getUpVote();
-    void setUpVote(int value);
-    int getDownVote();
-    void setDownVote(int value);
-    int increaseUpVote();
-    int decreaseUpVote();
-    int increaseDownVote();
-    int decreaseDownVote();
+    void addUpVoter(UserEntity voter);
+    void removeUpVoter(UserEntity voter);
+    void addDownVoter(UserEntity voter);
+    void removeDownVoter(UserEntity voter);
+    List<UserEntity> getUpVoters();
+    List<UserEntity> getDownVoters();
 }

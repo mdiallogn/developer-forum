@@ -2,6 +2,7 @@ package com.example.server.model.post;
 
 import com.example.server.model.comment.Comment;
 import com.example.server.model.user.User;
+import com.example.server.model.user.UserEntity;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -34,9 +35,9 @@ public class PostEntity implements Post{
     @Field("comments")
     private List<Comment> comments;
     @Field("upVote")
-    private int upVote;
+    private List<UserEntity> upVoters;
     @Field("downVote")
-    private int downVote;
+    private List<UserEntity> downVoters;
 
     public PostEntity(String subject, String content) {
         this.subject = subject;
@@ -44,8 +45,8 @@ public class PostEntity implements Post{
         this.author = null;
         this.date = Timestamp.valueOf(LocalDateTime.now()).toString();
         this.comments = new ArrayList<>();
-        upVote = 0;
-        downVote = 0;
+        upVoters = new ArrayList<>();
+        downVoters = new ArrayList<>();
     }
 
     @Override
@@ -114,33 +115,39 @@ public class PostEntity implements Post{
     }
 
     @Override
-    public void setUpVote(int value) {
-        upVote = value;
+    public void addUpVoter(UserEntity voter) {
+        if (upVoters.contains(voter)) {
+            throw new IllegalArgumentException();
+        }
+        this.upVoters.add(voter);
     }
 
     @Override
-    public void setDownVote(int value) {
-        downVote = value;
+    public void removeUpVoter(UserEntity voter) {
+        upVoters.remove(voter);
     }
 
     @Override
-    public int increaseUpVote() {
-        return ++upVote;
+    public void addDownVoter(UserEntity voter) {
+        if (downVoters.contains(voter)) {
+            throw new IllegalArgumentException();
+        }
+        this.downVoters.add(voter);
     }
 
     @Override
-    public int decreaseUpVote() {
-        return --upVote;
+    public void removeDownVoter(UserEntity voter) {
+        downVoters.remove(voter);
     }
 
     @Override
-    public int increaseDownVote() {
-        return ++downVote;
+    public List<UserEntity> getUpVoters() {
+        return upVoters;
     }
 
     @Override
-    public int decreaseDownVote() {
-        return --downVote;
+    public List<UserEntity> getDownVoters() {
+        return downVoters;
     }
 
     @Override
@@ -151,8 +158,8 @@ public class PostEntity implements Post{
                 ", content='" + content + '\'' +
                 ", author=" + author +
                 ", comments=" + comments +
-                ", upVote=" + upVote +
-                "downVote=" + downVote +
+                ", upVote=" + upVoters +
+                "downVote=" + downVoters +
                 '}';
     }
 

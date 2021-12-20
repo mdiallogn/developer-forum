@@ -8,21 +8,17 @@ import com.example.server.model.user.User;
 import com.example.server.model.user.UserEntity;
 import com.example.server.services.comment.CommentService;
 import com.example.server.services.post.PostService;
-import com.example.server.services.post.PostServiceImplement;
 import com.example.server.services.user.UserService;
-import com.example.server.services.user.UserServiceImplement;
-import com.example.server.utils.DateGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -123,5 +119,63 @@ public class PostController {
     @GetMapping()
     public ResponseEntity<List<Post>> getAll() {
         return new ResponseEntity<>(postService.findAll(), HttpStatus.OK);
+    }
+
+    @PostMapping("/{id}/upvotes")
+    public ResponseEntity<Post> upVote(@RequestBody UserEntity voter,
+                                       @PathVariable String id) {
+        Post post =  postService.getById(id);
+        if (post == null) {
+            throw new IllegalArgumentException("Invalid Post id");
+        }
+        Optional<UserEntity> result = post
+                .getUpVoters()
+                    .stream()
+                    .filter(user -> user.getId().equals(voter.getId()))
+                    .findFirst();
+        if (result.isEmpty()) {
+            // If user already down vote, cancel down vote before upvote
+            Optional<UserEntity> downVoter = post
+                    .getDownVoters()
+                        .stream()
+                        .filter(user -> user.getId().equals(voter.getId()))
+                        .findFirst();
+            if (!downVoter.isEmpty()) {
+                post.removeDownVoter(downVoter.get());
+            }
+            post.addUpVoter(voter);
+        } else {
+            post.removeUpVoter(voter);
+        }
+        return ResponseEntity.ok(postService.update(post.getId(), post));
+    }
+
+    @PostMapping("/{id}/downvotes")
+    public ResponseEntity<Post> downVote(@RequestBody UserEntity voter,
+                                       @PathVariable String id) {
+        Post post =  postService.getById(id);
+        if (post == null) {
+            throw new IllegalArgumentException("Invalid Post id");
+        }
+        Optional<UserEntity> result = post
+                .getDownVoters()
+                .stream()
+                .filter(user -> user.getId().equals(voter.getId()))
+                .findFirst();
+        if (result.isEmpty()) {
+            // If user already down vote, cancel down vote before upvote
+            Optional<UserEntity> upVoter = post
+                    .getUpVoters()
+                    .stream()
+                    .filter(user -> user.getId().equals(voter.getId()))
+                    .findFirst();
+            if (!upVoter.isEmpty()) {
+                post.removeUpVoter(upVoter.get());
+            }
+            post.addDownVoter(voter);
+        } else {
+            post.removeDownVoter(voter);
+        }
+        return ResponseEntity.ok(postService.update(post.getId(), post));
     }
 }

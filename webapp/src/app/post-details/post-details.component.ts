@@ -19,7 +19,6 @@ export class PostDetailsComponent implements OnInit {
       const id = params['id']
       this.http.get<Post>(API.base + '/posts/' + id).subscribe(response => {
         this.post = response
-        console.log(response)
       })
     })
   }
