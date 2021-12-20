@@ -8,7 +8,7 @@ export class CommentCountPipe implements PipeTransform {
       value.forEach(comment => {
           count += 1
           if (comment.reply != null) {
-            comment.reply.length
+            count +=comment.reply.length
           }
       });
     return count;
