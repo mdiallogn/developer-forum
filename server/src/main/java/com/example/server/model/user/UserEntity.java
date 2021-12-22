@@ -1,5 +1,6 @@
 package com.example.server.model.user;
 
+import com.example.server.model.Notification;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.PersistenceConstructor;
@@ -30,7 +31,7 @@ public class UserEntity implements User {
     @Field("role")
     private String role;
     @Field("notifications")
-    private List<String> notifications;
+    private List<Notification> notifications;
 
     @PersistenceConstructor
     public UserEntity(String firstName, String lastName, String userName, String password, String role) {
@@ -73,7 +74,7 @@ public class UserEntity implements User {
     }
 
     @Override
-    public List<String> getNotifications() {
+    public List<Notification> getNotifications() {
         return notifications;
     }
 

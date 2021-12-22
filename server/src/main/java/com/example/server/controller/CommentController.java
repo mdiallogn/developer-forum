@@ -1,11 +1,13 @@
 package com.example.server.controller;
 
+import com.example.server.model.Notification;
 import com.example.server.model.comment.Comment;
 import com.example.server.model.comment.CommentEntity;
 import com.example.server.model.post.Post;
 import com.example.server.model.post.PostEntity;
 import com.example.server.model.user.User;
 import com.example.server.model.user.UserEntity;
+import com.example.server.repository.NotificationRepository;
 import com.example.server.services.comment.CommentService;
 import com.example.server.services.post.PostService;
 import com.example.server.services.user.UserService;
@@ -33,6 +35,7 @@ public class CommentController {
     private final UserService userService;
     private final PostService postService;
     private final SimpMessagingTemplate messagingTemplate;
+    private final NotificationRepository repository;
 
     private final ObjectMapper mapper = new ObjectMapper();
 
@@ -42,7 +45,9 @@ public class CommentController {
 
         UserEntity author = (UserEntity) userService.getById(userid);
         Post post = postService.getById(postId);
-        post.getAuthor().getNotifications().add(author.getUserName()+ " commented on your post");
+        Notification notification = new Notification(author.getUserName()+ " commented on your post");
+        repository.save(notification);
+        post.getAuthor().getNotifications().add(notification);
         this.sendCommentNotification(post.getAuthor().getUserName(), author.getUserName());
         Comment comment = mapper.treeToValue(jsonNode, CommentEntity.class);
 
@@ -106,7 +111,7 @@ public class CommentController {
         return new ResponseEntity<>("Comment repository is empty", HttpStatus.NOT_FOUND);
     }
 
-    @MessageMapping("notification")
+    @MessageMapping("/notification")
     public void sendCommentNotification(@Payload String postAuthorUserName, String commentAuthorUsername){
         this.messagingTemplate.convertAndSend("/users/"+postAuthorUserName+"/notifications", commentAuthorUsername+" commented on your post ");
     }

@@ -1,5 +1,6 @@
 package com.example.server.model.user;
 
+import com.example.server.model.Notification;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 
 import java.util.List;
@@ -14,7 +15,7 @@ public interface User {
     String getUserName();
     String getPassword();
     String getRole();
-    List<String> getNotifications();
+    List<Notification> getNotifications();
 
     void setFirstName(String firstName);
     void setLastName(String lastName);
