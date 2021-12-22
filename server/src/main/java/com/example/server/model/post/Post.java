@@ -28,4 +28,6 @@ public interface Post {
     void removeDownVoter(UserEntity voter);
     List<UserEntity> getUpVoters();
     List<UserEntity> getDownVoters();
+    int getTotalLikeDislike();
+    void setTotalLikeDislike(int totalLikeDislike);
 }

@@ -38,6 +38,9 @@ public class PostEntity implements Post{
     private List<UserEntity> upVoters;
     @Field("downVote")
     private List<UserEntity> downVoters;
+    @Field("totalLikeDislike")
+    private int totalLikeDislike;
+
 
     public PostEntity(String subject, String content) {
         this.subject = subject;
@@ -47,6 +50,7 @@ public class PostEntity implements Post{
         this.comments = new ArrayList<>();
         upVoters = new ArrayList<>();
         downVoters = new ArrayList<>();
+        this.totalLikeDislike=0;
     }
 
     @Override
@@ -150,16 +154,26 @@ public class PostEntity implements Post{
         return downVoters;
     }
 
+    public int getTotalLikeDislike() {
+        return totalLikeDislike;
+    }
+
+    public void setTotalLikeDislike(int totalLikeDislike) {
+        this.totalLikeDislike = totalLikeDislike;
+    }
+
     @Override
     public String toString() {
-        return "Post{" +
+        return "PostEntity{" +
                 "id='" + id + '\'' +
                 ", subject='" + subject + '\'' +
                 ", content='" + content + '\'' +
                 ", author=" + author +
+                ", date='" + date + '\'' +
                 ", comments=" + comments +
-                ", upVote=" + upVoters +
-                "downVote=" + downVoters +
+                ", upVoters=" + upVoters +
+                ", downVoters=" + downVoters +
+                ", totalLikeDislike=" + totalLikeDislike +
                 '}';
     }
 
