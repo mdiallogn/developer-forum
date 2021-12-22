@@ -6,9 +6,11 @@ import com.example.server.model.post.Post;
 import com.example.server.model.post.PostEntity;
 import com.example.server.model.user.User;
 import com.example.server.model.user.UserEntity;
+import com.example.server.services.Vote;
 import com.example.server.services.comment.CommentService;
 import com.example.server.services.post.PostService;
 import com.example.server.services.user.UserService;
+import com.example.server.threads.NumberLikeDislikeUpdater;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -31,15 +33,16 @@ public class PostController {
     private final CommentService commentService;
     private final UserService userService;
     private final ObjectMapper mapper = new ObjectMapper();
+    //private NumberLikeDislikeUpdater numberLikeDislikeUpdater;
 
     @PostMapping("/{userid}")
-
     public ResponseEntity<Post> add(@RequestBody PostEntity post, @PathVariable String userid) {
         User author = userService.getById(userid);
         Post newPost = new PostEntity(post.getSubject(), post.getContent());
         newPost.setAuthor(author);
         newPost.setContent(post.getContent());
         postService.add(newPost);
+
         return new ResponseEntity<>(newPost, HttpStatus.CREATED);
     }
 
@@ -65,7 +68,7 @@ public class PostController {
 
     @PostMapping("/{id}/comments")
     public ResponseEntity<Post> comment(@RequestBody CommentEntity comment, @PathVariable String id) {
-        Post post =  postService.getById(id);
+        Post post = postService.getById(id);
         if (post == null) {
             throw new IllegalArgumentException("Invalid Post id");
         }
@@ -80,14 +83,14 @@ public class PostController {
     public ResponseEntity<Post> reply(@RequestBody CommentEntity comment,
                                       @PathVariable String postId,
                                       @PathVariable String commentId) {
-        Post post =  postService.getById(postId);
+        Post post = postService.getById(postId);
         if (post == null) {
             throw new IllegalArgumentException("Invalid Post id");
         }
         Optional<Comment> parentComment = post.getComments()
-                                                    .stream()
-                                                    .filter(c -> commentId.equals(c.getId()))
-                                                    .findFirst();
+                .stream()
+                .filter(c -> commentId.equals(c.getId()))
+                .findFirst();
         if (parentComment.isEmpty()) {
             throw new IllegalArgumentException("Parent comment not found !");
         }
@@ -95,13 +98,12 @@ public class PostController {
         CommentEntity reply = new CommentEntity(comment.getMessage());
         reply.setAuthor(comment.getAuthor());
 
-        CommentEntity replyTarget = (CommentEntity)parentComment.get();
+        CommentEntity replyTarget = (CommentEntity) parentComment.get();
         replyTarget.addReply(commentService.add(reply));
 
         Post newPost = postService.update(postId, post);
         return new ResponseEntity<>(newPost, HttpStatus.OK);
     }
-
 
 
     @DeleteMapping("/{id}")
@@ -111,7 +113,7 @@ public class PostController {
     }
 
     @DeleteMapping("/all")
-    public ResponseEntity<?> deleteAll(){
+    public ResponseEntity<?> deleteAll() {
         postService.deleteAll();
         return new ResponseEntity<>("Post repository is empty", HttpStatus.NOT_FOUND);
     }
@@ -124,39 +126,46 @@ public class PostController {
     @PostMapping("/{id}/upvotes")
     public ResponseEntity<Post> upVote(@RequestBody UserEntity voter,
                                        @PathVariable String id) {
-        Post post =  postService.getById(id);
+        Post post = postService.getById(id);
         if (post == null) {
             throw new IllegalArgumentException("Invalid Post id");
         }
+        Vote vote = new Vote(post.getTotalLikeDislike());
+        //initialize our thread for managing the number of likes/dislikes on post
+        Thread upVoteThread = new Thread(new NumberLikeDislikeUpdater(vote, 1,post));
         Optional<UserEntity> result = post
                 .getUpVoters()
-                    .stream()
-                    .filter(user -> user.getId().equals(voter.getId()))
-                    .findFirst();
+                .stream()
+                .filter(user -> user.getId().equals(voter.getId()))
+                .findFirst();
         if (result.isEmpty()) {
             // If user already down vote, cancel down vote before upvote
             Optional<UserEntity> downVoter = post
                     .getDownVoters()
-                        .stream()
-                        .filter(user -> user.getId().equals(voter.getId()))
-                        .findFirst();
+                    .stream()
+                    .filter(user -> user.getId().equals(voter.getId()))
+                    .findFirst();
             if (!downVoter.isEmpty()) {
                 post.removeDownVoter(downVoter.get());
             }
             post.addUpVoter(voter);
+            upVoteThread.start();//we increment the total number of like/dislike
         } else {
-            post.removeUpVoter(voter);
+            post.removeUpVoter(voter);//???????
         }
         return ResponseEntity.ok(postService.update(post.getId(), post));
     }
 
     @PostMapping("/{id}/downvotes")
     public ResponseEntity<Post> downVote(@RequestBody UserEntity voter,
-                                       @PathVariable String id) {
-        Post post =  postService.getById(id);
+                                         @PathVariable String id) {
+        Post post = postService.getById(id);
         if (post == null) {
             throw new IllegalArgumentException("Invalid Post id");
         }
+        Vote vote = new Vote(post.getTotalLikeDislike());
+        //initialize our thread for managing the number of likes/dislikes on post
+        Thread downVoteThread = new Thread(new NumberLikeDislikeUpdater(vote, 0,post));
         Optional<UserEntity> result = post
                 .getDownVoters()
                 .stream()
@@ -173,6 +182,7 @@ public class PostController {
                 post.removeUpVoter(upVoter.get());
             }
             post.addDownVoter(voter);
+            downVoteThread.start();//we decrement the total number of like/dislike
         } else {
             post.removeDownVoter(voter);
         }

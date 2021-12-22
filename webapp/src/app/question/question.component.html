@@ -1,30 +1,35 @@
 <div class="question-type2033">
-    <div class="row">
-        <div class="col-md-1">
-            <div class="left-user12923 left-user12923-repeat">
-                <a href="#">
-                    <img src="assets/image/emptyProfil.jpg" alt="Photo de profil">
-                    <b>{{post.author.userName }}</b>
-                </a>
-            </div>
-        </div>
-        <div class="col-md-11">
-            <div class="right-description893">
-                <div id="que-hedder2983">
-                    <h3><a [routerLink]="['/posts', post.id]">{{ post.subject }}</a></h3>
-                </div>
-                <div class="ques-details10018">
-                    <p class="mb">{{ post.content }} </p>
-                </div>
-                <hr>
-                <div class="ques-icon-info3293">
-                    <a href="#" (click)="upVote($event)"><i class="fa fa-thumbs-up {{currentUserUpVote ? 'voted': ''}}" aria-hidden="true">{{ post.upVoters?.length }}</i> </a>
-                    <a href="#" (click)="downVote($event)"><i class="fa fa-thumbs-down {{currentUserDownVote ? 'voted': ''}}" aria-hidden="true">{{ post.downVoters?.length}}</i> </a>
-                    <a href="#"><i class="fa fa-clock-o" aria-hidden="true"> {{post.date | date: 'short'}}</i></a>
-                    <a href="/posts/{{ post.id }}"><i class="fa fa-comment" aria-hidden="true"> {{post.comments | commentCount}}</i></a>
-                    <a href="#"><i class="fa fa-user" aria-hidden="true">{{post.author.userName }}</i></a>
-                </div>
-            </div>
-        </div>
+  <div class="row">
+    <div class="col-md-1">
+      <div class="left-user12923 left-user12923-repeat">
+        <a href="#">
+          <img src="assets/image/emptyProfil.jpg" alt="Photo de profil">
+          <b>{{post.author.userName }}</b>
+        </a>
+      </div>
     </div>
+    <div class="col-md-11">
+      <div class="right-description893">
+        <div id="que-hedder2983">
+          <h3><a [routerLink]="['/posts', post.id]">{{ post.subject }}</a></h3>
+        </div>
+        <div class="ques-details10018">
+          <p class="mb">{{ post.content }} </p>
+        </div>
+        <hr>
+        <div class="ques-icon-info3293">
+          <a href="#" (click)="upVote($event)"><i class="fa fa-thumbs-up {{currentUserUpVote ? 'voted': ''}}"
+                                                  aria-hidden="true">{{ post.upVoters?.length }}</i> </a>
+          <a href="#" (click)="downVote($event)"><i class="fa fa-thumbs-down {{currentUserDownVote ? 'voted': ''}}"
+                                                    aria-hidden="true">{{ post.downVoters?.length}}</i> </a>
+          <a href="#"><i class="{{currentUserDownVote ? 'voted': ''}}"
+                         aria-hidden="true">{{ post.totalLikeDislike}}</i></a>
+          <a href="#"><i class="fa fa-clock-o" aria-hidden="true"> {{post.date | date: 'short'}}</i></a>
+          <a href="/posts/{{ post.id }}"><i class="fa fa-comment"
+                                            aria-hidden="true"> {{post.comments | commentCount}}</i></a>
+          <a href="#"><i class="fa fa-user" aria-hidden="true">{{post.author.userName }}</i></a>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
