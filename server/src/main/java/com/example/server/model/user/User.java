@@ -2,6 +2,7 @@ package com.example.server.model.user;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -13,6 +14,7 @@ public interface User {
     String getUserName();
     String getPassword();
     String getRole();
+    List<String> getNotifications();
 
     void setFirstName(String firstName);
     void setLastName(String lastName);

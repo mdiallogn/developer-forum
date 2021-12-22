@@ -12,14 +12,14 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
-        config.enableSimpleBroker("/api");
-        config.setApplicationDestinationPrefixes("/gkz");
+        config.enableSimpleBroker("/notifications");
+        config.setApplicationDestinationPrefixes("/api");
     }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry
-                .addEndpoint("/gkz-stomp-endpoint")
+                .addEndpoint("/websockets")
                 .setAllowedOrigins("http://127.0.0.1:4200", "http://localhost:4200")
                 .withSockJS();
     }

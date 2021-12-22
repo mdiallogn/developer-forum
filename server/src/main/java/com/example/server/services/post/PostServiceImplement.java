@@ -38,7 +38,7 @@ public class PostServiceImplement implements PostService{
 
     @Override
     public List<Post> findAll() {
-        return repository.findAll();
+        return !repository.findAll().isEmpty() ? repository.findAll() : null;
     }
 
     @Override

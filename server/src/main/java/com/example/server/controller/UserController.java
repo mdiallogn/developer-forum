@@ -9,7 +9,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
@@ -26,16 +25,15 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
-    @Autowired
-    private JwtUtil jwtUtil;
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    private final JwtUtil jwtUtil;
+    private final AuthenticationManager authenticationManager;
 
     @PostMapping()
-    public ResponseEntity<User> add(@RequestBody UserEntity user) throws JsonProcessingException {
+    public ResponseEntity<?> add(@RequestBody UserEntity user) throws JsonProcessingException {
         Logger logger = LoggerFactory.getLogger(UserController.class);
+        logger.info("user :: "  + user.toString());
         if (user != null && userService.getByUsername(user.getUserName()) != null) {
-            return ResponseEntity.badRequest().build();
+            return new ResponseEntity<>("this user name is already taken ", HttpStatus.CONFLICT);
         }
         return new ResponseEntity<>(userService.add(user), HttpStatus.CREATED);
     }
@@ -69,7 +67,9 @@ public class UserController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<User>> getAllUsers(@RequestParam @Nullable String username) {
+    public ResponseEntity<?> getAllUsers() {
+        //@RequestParam @Nullable String username
+        /*
         if (username != null && !username.isEmpty()) {
             var user = userService.getByUsername(username);
             List<User> users = new ArrayList<>();
@@ -77,8 +77,10 @@ public class UserController {
                 users.add(user);
             }
             return new ResponseEntity<>(users, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(userService.findAll(), HttpStatus.OK);
+        }*/
+        return userService.findAll() != null ?
+                new ResponseEntity<>(userService.findAll(), HttpStatus.OK) :
+                ResponseEntity.ok("The user repository is empty");
     }
 
     @DeleteMapping()

@@ -2,6 +2,7 @@ package com.example.server.filter;
 
 import com.example.server.services.CustomUserDetailsService;
 import com.example.server.utils.JwtUtil;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,12 +18,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
+@RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
 
-    @Autowired
-    private JwtUtil jwtUtil;
-    @Autowired
-    private CustomUserDetailsService service;
+    private final JwtUtil jwtUtil;
+    private final CustomUserDetailsService service;
 
 
     @Override

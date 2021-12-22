@@ -1,19 +1,20 @@
 package com.example.server.model.user;
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.util.List;
 import java.util.Objects;
 
 @Data
 @Setter
 @Getter
 @Document(collection = "user")
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserEntity implements User {
 
     @Id
@@ -28,15 +29,17 @@ public class UserEntity implements User {
     private String password;
     @Field("role")
     private String role;
+    @Field("notifications")
+    private List<String> notifications;
 
-
-    public UserEntity() {}
+    @PersistenceConstructor
     public UserEntity(String firstName, String lastName, String userName, String password, String role) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.userName = userName;
         this.password = password;
         this.role = role;
+        this.notifications = List.of();
     }
 
     @Override
@@ -67,6 +70,11 @@ public class UserEntity implements User {
     @Override
     public String getRole() {
         return role;
+    }
+
+    @Override
+    public List<String> getNotifications() {
+        return notifications;
     }
 
     @Override

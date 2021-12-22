@@ -16,6 +16,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -29,6 +32,7 @@ public class CommentController {
     private final CommentService commentService;
     private final UserService userService;
     private final PostService postService;
+    private final SimpMessagingTemplate messagingTemplate;
 
     private final ObjectMapper mapper = new ObjectMapper();
 
@@ -38,12 +42,14 @@ public class CommentController {
 
         UserEntity author = (UserEntity) userService.getById(userid);
         Post post = postService.getById(postId);
-
+        post.getAuthor().getNotifications().add(author.getUserName()+ " commented on your post");
+        this.sendCommentNotification(post.getAuthor().getUserName(), author.getUserName());
         Comment comment = mapper.treeToValue(jsonNode, CommentEntity.class);
 
         comment.setDate(DateGenerator.generateDate());
         comment.setAuthor(author);
         comment.setReply(new ArrayList<>());
+
 
         post.addComment(comment);
 
@@ -98,5 +104,10 @@ public class CommentController {
     public ResponseEntity<?> deleteAll(){
         commentService.deleteAll();
         return new ResponseEntity<>("Comment repository is empty", HttpStatus.NOT_FOUND);
+    }
+
+    @MessageMapping("notification")
+    public void sendCommentNotification(@Payload String postAuthorUserName, String commentAuthorUsername){
+        this.messagingTemplate.convertAndSend("/users/"+postAuthorUserName+"/notifications", commentAuthorUsername+" commented on your post ");
     }
 }

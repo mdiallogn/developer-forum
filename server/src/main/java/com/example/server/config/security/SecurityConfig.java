@@ -3,6 +3,7 @@ package com.example.server.config.security;
 import com.example.server.filter.JwtFilter;
 import com.example.server.services.CustomUserDetailsService;
 import com.example.server.utils.Const;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,13 +20,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private CustomUserDetailsService userDetailsService;
-
-    @Autowired
-    private JwtFilter jwtFilter;
+    private final CustomUserDetailsService userDetailsService;
+    private final JwtFilter jwtFilter;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -54,7 +53,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/v1/users/login").permitAll()
                 .antMatchers("/api/v1/post/**").authenticated()
                 .antMatchers("/api/v1/comment/**").authenticated()
-                .antMatchers("/api/v1/users/all").authenticated()
+                //.antMatchers("/api/v1/users/all").authenticated()
+                .antMatchers("/api/v1/users/all").permitAll()
                 .and().exceptionHandling().and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);

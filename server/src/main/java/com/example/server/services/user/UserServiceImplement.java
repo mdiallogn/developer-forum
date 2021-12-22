@@ -39,7 +39,7 @@ public class UserServiceImplement implements UserService{
 
     @Override
     public List<User> findAll() {
-        return repository.findAll();
+        return repository.count() > 0 ? repository.findAll() : null;
     }
 
     @Override
