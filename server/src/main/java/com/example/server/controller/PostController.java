@@ -38,7 +38,7 @@ public class PostController {
     @PostMapping("/{userid}")
     public ResponseEntity<Post> add(@RequestBody PostEntity post, @PathVariable String userid) {
         User author = userService.getById(userid);
-        Post newPost = new PostEntity(post.getSubject(), post.getContent());
+        PostEntity newPost = new PostEntity(post.getSubject(), post.getContent());
         newPost.setAuthor(author);
         newPost.setContent(post.getContent());
         postService.add(newPost);
@@ -49,8 +49,8 @@ public class PostController {
     @PutMapping("/{id}")
     public ResponseEntity<Post> update(@RequestBody JsonNode jsonNode, @PathVariable String id) throws JsonProcessingException {
 
-        Post post = postService.getById(id);
-        Post newPost = mapper.treeToValue(jsonNode, PostEntity.class);
+        PostEntity post = postService.getById(id);
+        PostEntity newPost = mapper.treeToValue(jsonNode, PostEntity.class);
 
         User userEntity = userService.getById(post.getAuthor().getId());
         newPost.setAuthor(userEntity);
@@ -68,7 +68,7 @@ public class PostController {
 
     @PostMapping("/{id}/comments")
     public ResponseEntity<Post> comment(@RequestBody CommentEntity comment, @PathVariable String id) {
-        Post post = postService.getById(id);
+        PostEntity post = postService.getById(id);
         if (post == null) {
             throw new IllegalArgumentException("Invalid Post id");
         }
@@ -83,7 +83,7 @@ public class PostController {
     public ResponseEntity<Post> reply(@RequestBody CommentEntity comment,
                                       @PathVariable String postId,
                                       @PathVariable String commentId) {
-        Post post = postService.getById(postId);
+        PostEntity post = postService.getById(postId);
         if (post == null) {
             throw new IllegalArgumentException("Invalid Post id");
         }
@@ -101,7 +101,7 @@ public class PostController {
         CommentEntity replyTarget = (CommentEntity) parentComment.get();
         replyTarget.addReply(commentService.add(reply));
 
-        Post newPost = postService.update(postId, post);
+        PostEntity newPost = postService.update(postId, post);
         return new ResponseEntity<>(newPost, HttpStatus.OK);
     }
 
@@ -119,14 +119,14 @@ public class PostController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<Post>> getAll() {
+    public ResponseEntity<List<PostEntity>> getAll() {
         return new ResponseEntity<>(postService.findAll(), HttpStatus.OK);
     }
 
     @PostMapping("/{id}/upvotes")
     public ResponseEntity<Post> upVote(@RequestBody UserEntity voter,
                                        @PathVariable String id) {
-        Post post = postService.getById(id);
+        PostEntity post = postService.getById(id);
         if (post == null) {
             throw new IllegalArgumentException("Invalid Post id");
         }
@@ -145,9 +145,7 @@ public class PostController {
                     .stream()
                     .filter(user -> user.getId().equals(voter.getId()))
                     .findFirst();
-            if (!downVoter.isEmpty()) {
-                post.removeDownVoter(downVoter.get());
-            }
+            downVoter.ifPresent(post::removeDownVoter);
             post.addUpVoter(voter);
             upVoteThread.start();//we increment the total number of like/dislike
         } else {
@@ -159,7 +157,7 @@ public class PostController {
     @PostMapping("/{id}/downvotes")
     public ResponseEntity<Post> downVote(@RequestBody UserEntity voter,
                                          @PathVariable String id) {
-        Post post = postService.getById(id);
+        PostEntity post = postService.getById(id);
         if (post == null) {
             throw new IllegalArgumentException("Invalid Post id");
         }
@@ -178,9 +176,7 @@ public class PostController {
                     .stream()
                     .filter(user -> user.getId().equals(voter.getId()))
                     .findFirst();
-            if (!upVoter.isEmpty()) {
-                post.removeUpVoter(upVoter.get());
-            }
+            upVoter.ifPresent(post::removeUpVoter);
             post.addDownVoter(voter);
             downVoteThread.start();//we decrement the total number of like/dislike
         } else {

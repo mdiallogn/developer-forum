@@ -28,7 +28,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/comment")
+@RequestMapping("/comments")
 public class CommentController {
 
     private final CommentService commentService;
@@ -39,12 +39,12 @@ public class CommentController {
 
     private final ObjectMapper mapper = new ObjectMapper();
 
-    @PostMapping("/add/{postId}/{userid}")
+    @PostMapping("/{postId}/{userid}")
     public ResponseEntity<Comment> add(@RequestBody JsonNode jsonNode, @PathVariable String postId,
                                        @PathVariable String userid) throws JsonProcessingException {
 
-        UserEntity author = (UserEntity) userService.getById(userid);
-        Post post = postService.getById(postId);
+        UserEntity author = userService.getById(userid);
+        PostEntity post = postService.getById(postId);
         Notification notification = new Notification(author.getUserName()+ " commented on your post");
         repository.save(notification);
         post.getAuthor().getNotifications().add(notification);
@@ -69,7 +69,7 @@ public class CommentController {
     public ResponseEntity<Comment> update(@RequestBody JsonNode jsonNode, @PathVariable String postId, @PathVariable String commentId) throws JsonProcessingException {
 
         Comment comment = commentService.getById(commentId);
-        Post post = postService.getById(postId);
+        PostEntity post = postService.getById(postId);
 
         CommentEntity newComment = mapper.treeToValue(jsonNode, CommentEntity.class);
 
@@ -89,7 +89,7 @@ public class CommentController {
     @DeleteMapping("/{postId}/{commentId}")
     public ResponseEntity<String> deleteById(@PathVariable String postId, @PathVariable String commentId) {
 
-        Post post = postService.getById(postId);
+        PostEntity post = postService.getById(postId);
         Comment comment = commentService.getById(commentId);
 
         post.deleteComment(comment);
@@ -100,12 +100,12 @@ public class CommentController {
         return ResponseEntity.ok("Comment deleted successfully !");
     }
 
-    @GetMapping("/all")
+    @GetMapping()
     public ResponseEntity<List<Comment>> getAll() {
         return new ResponseEntity<>(commentService.findAll(), HttpStatus.OK);
     }
 
-    @DeleteMapping("/all")
+    @DeleteMapping()
     public ResponseEntity<?> deleteAll(){
         commentService.deleteAll();
         return new ResponseEntity<>("Comment repository is empty", HttpStatus.NOT_FOUND);

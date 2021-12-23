@@ -2,6 +2,7 @@ package com.example.server.services.post;
 
 import com.example.server.exceptions.PostNotFoundException;
 import com.example.server.model.post.Post;
+import com.example.server.model.post.PostEntity;
 import com.example.server.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,12 +16,12 @@ public class PostServiceImplement implements PostService{
     private final PostRepository repository;
 
     @Override
-    public Post add(Post post) {
+    public PostEntity add(PostEntity post) {
         return repository.save(post);
     }
 
     @Override
-    public Post getById(String id) {
+    public PostEntity getById(String id) {
         if(!repository.existsById(id)){
             throw new PostNotFoundException(id);
         }
@@ -28,7 +29,7 @@ public class PostServiceImplement implements PostService{
     }
 
     @Override
-    public Post update(String id, Post post) {
+    public PostEntity update(String id, PostEntity post) {
         if(!repository.existsById(id)){
             throw new PostNotFoundException(id);
         }
@@ -37,7 +38,7 @@ public class PostServiceImplement implements PostService{
     }
 
     @Override
-    public List<Post> findAll() {
+    public List<PostEntity> findAll() {
         return !repository.findAll().isEmpty() ? repository.findAll() : null;
     }
 

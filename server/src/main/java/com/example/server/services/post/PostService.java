@@ -7,10 +7,10 @@ import java.util.List;
 
 public interface PostService {
 
-    Post add (Post post);
-    Post getById(String id);
-    Post update(String id, Post post);
-    List<Post> findAll();
+    PostEntity add (PostEntity post);
+    PostEntity getById(String id);
+    PostEntity update(String id, PostEntity post);
+    List<PostEntity> findAll();
     void deleteById(String id);
     void deleteAll();
 }

@@ -8,7 +8,7 @@ import java.util.List;
 public interface UserService {
 
     User add (User user);
-    User getById(String id);
+    UserEntity getById(String id);
     User update(String id, User user);
     List<User> findAll();
     void deleteById(String id);

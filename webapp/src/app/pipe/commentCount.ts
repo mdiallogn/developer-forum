@@ -1,3 +1,4 @@
+// @ts-ignore
 import {Pipe, PipeTransform} from '@angular/core';
 import { Comment } from '../model/comment';
 

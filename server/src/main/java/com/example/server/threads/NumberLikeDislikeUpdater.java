@@ -5,9 +5,9 @@ import com.example.server.services.Vote;
 
 public class NumberLikeDislikeUpdater implements Runnable {
 
-    private Vote vote;
-    private int operation;
-    private Post post;
+    private final Vote vote;
+    private final int operation;
+    private final Post post;
 
     public NumberLikeDislikeUpdater(Vote vote, int operation, Post post) {
         this.vote = vote;
