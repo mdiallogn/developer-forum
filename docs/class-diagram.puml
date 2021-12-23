@@ -1,0 +1,67 @@
+@startuml
+
+class User {
+    - id: Integer
+    - firstName: String
+    - lastName: String
+    - username: String
+    - password: String
+    - createdAt: Datetime
+    - updatedAt: Datetime
+    - notifications : Notification[*]
+
+    + getId(): Integer
+    + getFirstName(): String
+    + getLastName(): String
+    + getUsername(): String
+    + getPassword(): String
+    + getCreatedAt(): Datetime
+    + getupdatedAt(): Datetime
+    + getNotifications() : Notification[*]
+    + setFirstName(newValue: String): void
+    + setLastName(newValue: String): void
+    + setUsername(newValue: String): void
+    + setPassword(newValue: String): void
+
+}
+
+class Post {
+    - id: Integer
+    - content: String
+    - createdAt: Datime
+    - updatedAt: Datetime
+
+    + getId(): Integer
+    + getContent(): String
+    + getCreatedAt(): Datime
+    + getUpdatedAt(): Datetime
+
+    + setContent(newValue: String): void
+}
+
+class Comment {
+    - id: String
+    - message: String
+
+    + getId(): String
+    + getMessage(): String
+
+    + setMessage(newValue: String): void
+}
+
+class Notification {
+    - id: String
+    - content: String
+
+    + getId(): String
+    + getContent(): String
+}
+
+User <-- "author" Post
+User <-- "author" Comment
+Comment ----"1..*" Post
+Comment -- "[0..*]reply" Comment
+
+User *-- Notification
+
+@enduml
