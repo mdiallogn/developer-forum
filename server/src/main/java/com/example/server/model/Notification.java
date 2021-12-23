@@ -6,7 +6,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
 @Document("notification")
-
 public class Notification {
 
     @Id
