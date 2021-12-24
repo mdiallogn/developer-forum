@@ -6,6 +6,10 @@ Dans ce repos, vous trouverez le code source du projet. Il composé de deux part
 . link:webapp[] : client web, codé en angular.
 . link:docs[] : contient le diagramme de classe.
 
+== Diagramme de classe
+
+image::docs/classdiagramm.png[]
+
 == Comment lancer le serveur ?
 
 . Préalabement, s'assuré que Java 11+  est installé.
