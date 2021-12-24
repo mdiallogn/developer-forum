@@ -57,9 +57,9 @@ class Notification {
     + getContent(): String
 }
 
-User <-- "author" Post
-User <-- "author" Comment
-Comment ----"1..*" Post
+User "author"<--  Post
+User "author"<--  Comment
+Comment "1..*"---- Post
 Comment -- "[0..*]reply" Comment
 
 User *-- Notification

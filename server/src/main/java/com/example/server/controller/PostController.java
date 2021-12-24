@@ -7,17 +7,13 @@ import com.example.server.model.post.Post;
 import com.example.server.model.post.PostEntity;
 import com.example.server.model.user.User;
 import com.example.server.model.user.UserEntity;
-import com.example.server.services.Vote;
 import com.example.server.services.comment.CommentService;
 import com.example.server.services.post.PostService;
 import com.example.server.services.user.UserService;
-import com.example.server.threads.NumberLikeDislikeUpdater;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -127,7 +123,7 @@ public class PostController {
 
     @PostMapping("/{id}/upvotes")
     public ResponseEntity<Post> upVote(@RequestBody UserEntity voter,
-                                       @PathVariable String id) throws InterruptedException {
+                                       @PathVariable String id) {
         // Wait until the post with {id} are on update.
         while (lockers.isAlreadyLocked(id)){}
         lockers.lock(id); //lock post.
@@ -164,7 +160,7 @@ public class PostController {
 
     @PostMapping("/{id}/downvotes")
     public ResponseEntity<Post> downVote(@RequestBody UserEntity voter,
-                                         @PathVariable String id) throws InterruptedException {
+                                         @PathVariable String id){
         // Wait until the post with {id} are on update.
         while (lockers.isAlreadyLocked(id)){}
         lockers.lock(id); //lock post.
