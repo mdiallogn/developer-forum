@@ -1,4 +1,4 @@
-=== ASK ME, un forum en ligne
+= ASK ME, un forum en ligne
 
 Dans ce repos, vous trouverez le code source du projet. Il composé de deux parties
 
