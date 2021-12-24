@@ -65,6 +65,6 @@ public class UserServiceImplement implements UserService{
         if (list.size() > 0) {
             user = list.get(0);
         }*/
-        return repository.findByUserName(username).stream().findFirst().get();
+        return repository.findByUserName(username).stream().findFirst().orElse(null);
     }
 }

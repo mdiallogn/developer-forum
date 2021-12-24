@@ -1,5 +1,6 @@
 package com.example.server.controller;
 
+import com.example.server.concurrency.PostLocker;
 import com.example.server.model.comment.Comment;
 import com.example.server.model.comment.CommentEntity;
 import com.example.server.model.post.Post;
@@ -33,7 +34,8 @@ public class PostController {
     private final CommentService commentService;
     private final UserService userService;
     private final ObjectMapper mapper = new ObjectMapper();
-    //private NumberLikeDislikeUpdater numberLikeDislikeUpdater;
+
+    private PostLocker lockers = new PostLocker();
 
     @PostMapping("/{userid}")
     public ResponseEntity<Post> add(@RequestBody PostEntity post, @PathVariable String userid) {
@@ -125,14 +127,18 @@ public class PostController {
 
     @PostMapping("/{id}/upvotes")
     public ResponseEntity<Post> upVote(@RequestBody UserEntity voter,
-                                       @PathVariable String id) {
+                                       @PathVariable String id) throws InterruptedException {
+        // Wait until the post with {id} are on update.
+        while (lockers.isAlreadyLocked(id)){}
+        lockers.lock(id); //lock post.
+
         PostEntity post = postService.getById(id);
         if (post == null) {
             throw new IllegalArgumentException("Invalid Post id");
         }
-        Vote vote = new Vote(post.getTotalLikeDislike());
+        //Vote vote = new Vote(post.getTotalLikeDislike());
         //initialize our thread for managing the number of likes/dislikes on post
-        Thread upVoteThread = new Thread(new NumberLikeDislikeUpdater(vote, 1,post));
+        //Thread upVoteThread = new Thread(new NumberLikeDislikeUpdater(vote, 1,post));
         Optional<UserEntity> result = post
                 .getUpVoters()
                 .stream()
@@ -147,23 +153,28 @@ public class PostController {
                     .findFirst();
             downVoter.ifPresent(post::removeDownVoter);
             post.addUpVoter(voter);
-            upVoteThread.start();//we increment the total number of like/dislike
+            //upVoteThread.start();//we increment the total number of like/dislike
         } else {
             post.removeUpVoter(voter);//???????
         }
-        return ResponseEntity.ok(postService.update(post.getId(), post));
+        PostEntity update = postService.update(post.getId(), post);
+        lockers.unlock(id);
+        return ResponseEntity.ok(update);
     }
 
     @PostMapping("/{id}/downvotes")
     public ResponseEntity<Post> downVote(@RequestBody UserEntity voter,
-                                         @PathVariable String id) {
+                                         @PathVariable String id) throws InterruptedException {
+        // Wait until the post with {id} are on update.
+        while (lockers.isAlreadyLocked(id)){}
+        lockers.lock(id); //lock post.
         PostEntity post = postService.getById(id);
         if (post == null) {
             throw new IllegalArgumentException("Invalid Post id");
         }
-        Vote vote = new Vote(post.getTotalLikeDislike());
+        //Vote vote = new Vote(post.getTotalLikeDislike());
         //initialize our thread for managing the number of likes/dislikes on post
-        Thread downVoteThread = new Thread(new NumberLikeDislikeUpdater(vote, 0,post));
+       //Thread downVoteThread = new Thread(new NumberLikeDislikeUpdater(vote, 0,post));
         Optional<UserEntity> result = post
                 .getDownVoters()
                 .stream()
@@ -178,10 +189,12 @@ public class PostController {
                     .findFirst();
             upVoter.ifPresent(post::removeUpVoter);
             post.addDownVoter(voter);
-            downVoteThread.start();//we decrement the total number of like/dislike
+            //downVoteThread.start();//we decrement the total number of like/dislike
         } else {
             post.removeDownVoter(voter);
         }
-        return ResponseEntity.ok(postService.update(post.getId(), post));
+        PostEntity update = postService.update(post.getId(), post);
+        lockers.unlock(id);
+        return ResponseEntity.ok(update);
     }
 }

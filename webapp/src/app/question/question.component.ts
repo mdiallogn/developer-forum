@@ -14,6 +14,7 @@ export class QuestionComponent {
   @Input() post: Post = new Post()
   currentUserUpVote: boolean = false
   currentUserDownVote: boolean = false
+  total : number = 0
   constructor(private http: HttpClient, private jwtClient: JwtClientService, private router: Router) {
   }
   ngAfterContentChecked() {
@@ -27,6 +28,7 @@ export class QuestionComponent {
   
       arr =  this.post.downVoters.filter(v => v.id == currentUser['id'])
       this.currentUserDownVote = arr.length > 0
+      this.total = this.post.upVoters.length - this.post.downVoters.length
     }
   }
   vote(isUpvote: boolean) : void {
