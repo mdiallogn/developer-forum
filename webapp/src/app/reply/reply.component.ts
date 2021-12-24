@@ -28,12 +28,13 @@ export class ReplyComponent implements OnInit {
     }
 
     submit(e:NgForm) {
-    console.log('form validated', e)
+    let data =  {}
     if (e.form.status === "VALID") {
-      const data = {
+      data = {
       message: e.value.message,
       author: this.jwtClientService.getUserInfo()
     };
+    console.log('=========>', data)
     //submit data
     this.http.post<Post>(API.base + '/posts/' + this.post.id + '/comments/' + this.comment.id + '/replies', data).subscribe(response => {
       this.toastr.success("Commentaire crée avec succès !");

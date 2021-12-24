@@ -2,8 +2,8 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
 import { CookieService } from 'ngx-cookie-service';
-import { Router } from '@angular/router';
 import { User } from '../model/user' 
+import API from '../api';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +12,7 @@ export class JwtClientService {
 
   public static isAuth: boolean = false;
   public static currentToken : string = "";
-  baseUrl: string = "http://127.0.0.1:8000/api/v1/users";
+  baseUrl: string = API.base + '/users';
   public static userInfo:User
 
   constructor(private http: HttpClient,
@@ -44,6 +44,7 @@ export class JwtClientService {
   }
 
   public connect(userToken: string, userInfo: User) {
+    console.log('the token => ', userToken)
     this.cookie.set('isAuth', 'true');
     this.cookie.set('currentToken', userToken);
     this.cookie.set('expiration', (Date.now() + 1000*60*10)+'');
@@ -62,7 +63,6 @@ export class JwtClientService {
     }
     return this.cookie.get('isAuth') === 'true'
   }
-
 
   public disconnect() {
     this.cookie.delete('isAuth')

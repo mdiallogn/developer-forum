@@ -44,15 +44,17 @@ export class LoginComponent implements OnInit {
     this.http.post(this.baseUrl + "/login", authRequest, {responseType: "text" as 'json'})
       .subscribe(
         data => {
-          console.warn("Token " + data);
           Global.TOKEN = data;
           this.http.get<Array<User>>(this.baseUrl + '?username=' + authRequest.userName).subscribe(data => {
             if (data.length > 0) {
-              this.jwtClientService.connect(data.toString(), data[0])
+              console.log(data)
+              this.jwtClientService.connect(Global.TOKEN, data[0])
               this.router.navigate(["/"]);
               this.toastr.success("Bon retour parmis nous " + authRequest.userName + " !")
             }
           })
+          this.loginForm.value["username"] = ''
+          this.loginForm.value["password"] = ''
         },
         error => {
           console.log("There is an error occurred: " + error)

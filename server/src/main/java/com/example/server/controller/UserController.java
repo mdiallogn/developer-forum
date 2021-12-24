@@ -30,8 +30,6 @@ public class UserController {
 
     @PostMapping()
     public ResponseEntity<?> add(@RequestBody UserEntity user) throws JsonProcessingException {
-        Logger logger = LoggerFactory.getLogger(UserController.class);
-        logger.info("user :: "  + user.toString());
         if (user != null && userService.getByUsername(user.getUserName()) != null) {
             return new ResponseEntity<>("this user name is already taken ", HttpStatus.CONFLICT);
         }
@@ -67,9 +65,9 @@ public class UserController {
     }
 
     @GetMapping()
-    public ResponseEntity<?> getAllUsers() {
+    public ResponseEntity<?> getAllUsers(@RequestParam @Nullable String username) {
         //@RequestParam @Nullable String username
-        /*
+
         if (username != null && !username.isEmpty()) {
             var user = userService.getByUsername(username);
             List<User> users = new ArrayList<>();
@@ -77,7 +75,7 @@ public class UserController {
                 users.add(user);
             }
             return new ResponseEntity<>(users, HttpStatus.OK);
-        }*/
+        }
         return userService.findAll() != null ?
                 new ResponseEntity<>(userService.findAll(), HttpStatus.OK) :
                 ResponseEntity.ok("The user repository is empty");
